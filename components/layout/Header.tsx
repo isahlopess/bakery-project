@@ -5,12 +5,13 @@ import { Wheat, Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import MagneticButton from "@/components/ui/MagneticButton";
 import BreadBagCart from "@/components/ui/BreadBagCart";
+import Link from "next/link";
 
 const menuLinks = [
-    { nome: "A Fornada", href: "#vitrine" },
-    { nome: "Cardápio", href: "#cardapio" },
-    { nome: "Depoimentos", href: "#depoimentos" },
-    { nome: "Visite-nos", href: "#visite-nos" }
+    { nome: "A Fornada", href: "/#vitrine" },
+    { nome: "Cardápio", href: "/#cardapio" },
+    { nome: "Depoimentos", href: "/#depoimentos" },
+    { nome: "Visite-nos", href: "/#visite-nos" }
 ];
 
 export default function Header() {
@@ -26,11 +27,16 @@ export default function Header() {
     }, []);
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        e.preventDefault();
-        setIsOpen(false);
-        const target = document.querySelector(href);
-        if (target) {
-            target.scrollIntoView({ behavior: "smooth" });
+        if (window.location.pathname === "/") {
+            e.preventDefault();
+            setIsOpen(false);
+            const targetId = href.replace("/", "");
+            const target = document.querySelector(targetId);
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+            }
+        } else {
+            setIsOpen(false);
         }
     };
 
@@ -43,26 +49,25 @@ export default function Header() {
             }`}
         >
             <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
-                <a
-                    href="#"
-                    onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+                <Link
+                    href="/"
                     className="flex items-center gap-2 text-[var(--color-creme)] hover:text-[var(--color-pao-dourado)] transition-colors group cursor-hover-target"
                 >
                     <Wheat className="w-6 h-6 text-[var(--color-pao-dourado)] group-hover:rotate-12 transition-transform duration-300" />
                     <span className="font-serif text-xl md:text-2xl font-bold tracking-tight">
                         Padaria<span className="text-[var(--color-terracota)]">.</span>
                     </span>
-                </a>
+                </Link>
                 <nav className="hidden md:flex items-center gap-8 font-semibold text-sm uppercase tracking-wider text-[var(--color-creme)]/80">
                     {menuLinks.map((link) => (
-                        <a
+                        <Link
                             key={link.nome}
                             href={link.href}
                             onClick={(e) => handleLinkClick(e, link.href)}
                             className="hover:text-[var(--color-pao-dourado)] transition-colors duration-300 py-1.5 border-b-2 border-transparent hover:border-[var(--color-pao-dourado)] cursor-hover-target"
                         >
                             {link.nome}
-                        </a>
+                        </Link>
                     ))}
                 </nav>
                 <div className="flex items-center gap-4">
@@ -101,14 +106,14 @@ export default function Header() {
                     >
                         <nav className="flex flex-col gap-6 px-8 py-10 font-bold uppercase tracking-widest text-base text-[var(--color-creme)]">
                             {menuLinks.map((link) => (
-                                <a
+                                <Link
                                     key={link.nome}
                                     href={link.href}
                                     onClick={(e) => handleLinkClick(e, link.href)}
                                     className="hover:text-[var(--color-pao-dourado)] transition-colors"
                                 >
                                     {link.nome}
-                                </a>
+                                </Link>
                             ))}
                             <a
                                 href="https://wa.me/5599999999999"

@@ -13,26 +13,11 @@ const categorias = [
     { id: "bebidas", nome: "Cafés & Bebidas", icone: Coffee }
 ];
 
-const itensMenu = [
-    { id: 1, nome: "Pão Caseiro", desc: "Pão de forma caseiro feito com farinha especial, macio por dentro e casquinha crocante por fora.", preco: 12.00, precoFormatado: "R$ 12,00", categoria: "paes", detalhe: "Forno de pedra • Feito com paixão", imagem: "https://images.unsplash.com/photo-1559811814-e2c57b5e69df?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 2, nome: "Pãozinho Francês", desc: "O tradicional pão francês crocante por fora e fofinho por dentro, assado fresco toda manhã.", preco: 1.50, precoFormatado: "R$ 1,50", categoria: "paes", detalhe: "Assado na hora • Unidade", imagem: "https://images.unsplash.com/photo-1608198093039-81259e1b10e0?q=80&w=1073&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
-    { id: 3, nome: "Rosca Doce", desc: "Rosca macia e trançada com cobertura de açúcar cristal e aroma de baunilha natural.", preco: 15.00, precoFormatado: "R$ 15,00", categoria: "doces", detalhe: "Açúcar cristal • Baunilha", imagem: "/images/p_es_doces_e_roscas.jpg" },
-    { id: 4, nome: "Sonho de Creme", desc: "Massa fofa e dourada recheada com creme de baunilha artesanal.", preco: 8.00, precoFormatado: "R$ 8,00", categoria: "doces", detalhe: "Recheio fresco • Servido quente", imagem: "/images/sonho_de_creme.jpg" },
-    { id: 5, nome: "Esfiha de Carne", desc: "Massa fininha e crocante com recheio generoso de carne temperada.", preco: 7.00, precoFormatado: "R$ 7,00", categoria: "paes", detalhe: "Carne moída • Tempero caseiro", imagem: "/images/esfiha_de_carne.jpg" },
-    { id: 6, nome: "Bolo de Cenoura", desc: "Bolo úmido com cobertura espessa de chocolate meio amargo derretido.", preco: 10.00, precoFormatado: "R$ 10,00", categoria: "doces", detalhe: "Chocolate 50% • Fatia generosa", imagem: "/images/bolo_cenoura.jpg" },
-    { id: 7, nome: "Pão Doce", desc: "Pão macio com cobertura crocante de farofa doce.", preco: 5.00, precoFormatado: "R$ 5,00", categoria: "doces", detalhe: "Farofa crocante • Manteiga", imagem: "/images/p_o_doce.jpg" },
-    { id: 8, nome: "Pão de Queijo & Cia", desc: "Pães de queijo macios e quentinhos, receita tradicional.", preco: 8.00, precoFormatado: "R$ 8,00", categoria: "paes", detalhe: "Queijo minas • Quentinhos", imagem: "/images/pa__de_queijo___paezinhos.jpg" },
-    { id: 9, nome: "Empada de Palmito", desc: "Massa amanteigada e quebradiça com recheio cremoso de palmito.", preco: 7.50, precoFormatado: "R$ 7,50", categoria: "paes", detalhe: "Massa amanteigada • Palmito", imagem: "/images/empada_palmito.jpg" },
-    { id: 10, nome: "Café Coado na Hora", desc: "Café 100% arábica coado no filtro de pano na hora.", preco: 6.00, precoFormatado: "R$ 6,00", categoria: "bebidas", detalhe: "Arábica 100% • Torra média", imagem: "/images/cafe_coado.jpg" },
-    { id: 11, nome: "Cappuccino Cremoso", desc: "Espresso com leite vaporizado aveludado e canela em pó.", preco: 12.00, precoFormatado: "R$ 12,00", categoria: "bebidas", detalhe: "Leite vaporizado • Canela", imagem: "https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=600&q=80" },
-    { id: 12, nome: "Suco de Laranja", desc: "Suco de laranjas frescas espremidas na hora.", preco: 9.00, precoFormatado: "R$ 9,00", categoria: "bebidas", detalhe: "Espremido na hora • Natural", imagem: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?auto=format&fit=crop&w=600&q=80" }
-];
-
 const ITEMS_PER_PAGE = 6;
 
 const paperTextureSVG = "url('data:image/svg+xml,%3Csvg viewBox=%220 0 256 256%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22n%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.75%22 numOctaves=%224%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/%3E%3C/svg%3E')";
 
-function AddToCartButton({ item }: { item: typeof itensMenu[0] }) {
+function AddToCartButton({ item }: { item: any }) {
     const { addItem } = useCart();
     const [justAdded, setJustAdded] = useState(false);
 
@@ -55,12 +40,12 @@ function AddToCartButton({ item }: { item: typeof itensMenu[0] }) {
     );
 }
 
-function printMenuPDF() {
+function printMenuPDF(produtos: any[]) {
     const iframe = document.createElement("iframe");
     iframe.style.display = "none";
     document.body.appendChild(iframe);
     const css = `body{font-family:'Georgia',serif;background:#fff;color:#3A2418;padding:40px;text-align:center}h1{color:#B5572B;font-size:32px;margin-bottom:10px}.subtitle{color:#7A5C48;margin-bottom:40px;font-style:italic}.grid{display:grid;grid-template-columns:1fr 1fr;gap:30px;text-align:left}.item{border-bottom:1px dashed #D9A05B;padding-bottom:15px;break-inside:avoid}.header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}.nome{font-size:18px;font-weight:bold}.preco{font-size:16px;font-weight:bold;color:#B5572B}.desc{font-size:14px;color:#735A4B;margin-top:5px}@media print{@page{margin:2cm}}`;
-    const html = `<html><head><title>Cardapio - Padaria do Bairro</title><style>${css}</style></head><body><h1>Padaria do Bairro</h1><div class="subtitle">Cardápio Oficial — Feito à mão, com amor em cada detalhe.</div><div class="grid">${itensMenu.map(i => `<div class="item"><div class="header"><span class="nome">${i.nome}</span><span class="preco">${i.precoFormatado}</span></div><div class="desc">${i.desc}</div></div>`).join("")}</div><div style="margin-top:50px;font-size:12px;color:#A59286">Obrigado pela preferência!</div></body></html>`;
+    const html = `<html><head><title>Cardapio - Padaria do Bairro</title><style>${css}</style></head><body><h1>Padaria do Bairro</h1><div class="subtitle">Cardápio Oficial — Feito à mão, com amor em cada detalhe.</div><div class="grid">${produtos.map(i => `<div class="item"><div class="header"><span class="nome">${i.nome}</span><span class="preco">${i.precoFormatado}</span></div><div class="desc">${i.desc}</div></div>`).join("")}</div><div style="margin-top:50px;font-size:12px;color:#A59286">Obrigado pela preferência!</div></body></html>`;
     iframe.contentWindow?.document.open();
     iframe.contentWindow?.document.write(html);
     iframe.contentWindow?.document.close();
@@ -136,13 +121,16 @@ function BookCover({ onOpen }: { onOpen: () => void }) {
     );
 }
 
-function OpenBook({ onClose, onImageClick }: { onClose: () => void, onImageClick: (url: string) => void }) {
+function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, onImageClick: (url: string) => void, produtos: any[] }) {
     const [categoriaAtiva, setCategoriaAtiva] = useState("todos");
     const [pagina, setPagina] = useState(0);
 
-    const itensFiltrados = itensMenu.filter(
-        (item) => categoriaAtiva === "todos" || item.categoria === categoriaAtiva
-    );
+    const processados = produtos.map(p => ({
+        ...p,
+        precoFormatado: typeof p.preco === 'number' ? `R$ ${p.preco.toFixed(2).replace('.', ',')}` : p.preco
+    }));
+
+    const itensFiltrados = categoriaAtiva === "todos" ? processados : processados.filter(i => i.categoria === categoriaAtiva);
 
     const totalPaginas = Math.ceil(itensFiltrados.length / ITEMS_PER_PAGE);
     const itensPagina = itensFiltrados.slice(pagina * ITEMS_PER_PAGE, (pagina + 1) * ITEMS_PER_PAGE);
@@ -200,7 +188,7 @@ function OpenBook({ onClose, onImageClick }: { onClose: () => void, onImageClick
                         </p>
                     </div>
                     <div className="relative z-10 flex flex-col gap-3 mt-8">
-                        <button onClick={printMenuPDF} className="flex items-center justify-center gap-2 w-full py-3 border border-[var(--color-marrom-cafe)]/20 text-[var(--color-marrom-cafe)]/70 hover:text-[var(--color-marrom-cafe)] hover:border-[var(--color-marrom-cafe)]/40 font-bold text-[10px] uppercase tracking-widest rounded-lg transition-all duration-300">
+                        <button onClick={() => printMenuPDF(processados)} className="flex items-center justify-center gap-2 w-full py-3 border border-[var(--color-marrom-cafe)]/20 text-[var(--color-marrom-cafe)]/70 hover:text-[var(--color-marrom-cafe)] hover:border-[var(--color-marrom-cafe)]/40 font-bold text-[10px] uppercase tracking-widest rounded-lg transition-all duration-300">
                             <Download className="w-3.5 h-3.5" />
                             Imprimir Cardápio (PDF)
                         </button>
@@ -301,7 +289,7 @@ function OpenBook({ onClose, onImageClick }: { onClose: () => void, onImageClick
         </motion.div>
     );
 }
-export default function Cardapio() {
+export default function Cardapio({ produtos = [] }: { produtos?: any[] }) {
     const [isOpen, setIsOpen] = useState(false);
     const [imagemExpandida, setImagemExpandida] = useState<string | null>(null);
     return (
@@ -317,7 +305,7 @@ export default function Cardapio() {
                     </motion.div>
                 ) : (
                     <motion.div key="book" initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -30 }} transition={{ duration: 0.5 }} className="w-full">
-                        <OpenBook onClose={() => setIsOpen(false)} onImageClick={setImagemExpandida} />
+                        <OpenBook onClose={() => setIsOpen(false)} onImageClick={setImagemExpandida} produtos={produtos} />
                     </motion.div>
                 )}
             </AnimatePresence>

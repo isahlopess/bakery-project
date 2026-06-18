@@ -60,18 +60,18 @@ export default function CustomCursor() {
 
     return (
         <motion.div
-            className="pointer-events-none fixed top-0 left-0 flex items-center justify-center rounded-full border border-white/50 bg-white/15 backdrop-blur-[1px] w-8 h-8"
+            className="pointer-events-none fixed top-0 left-0 flex items-center justify-center rounded-full w-8 h-8 z-[99999] shadow-md"
             style={{
                 x: smoothX,
                 y: smoothY,
-                zIndex: 999999,
-                mixBlendMode: isHovering ? "normal" : "difference",
+                backgroundColor: "var(--color-marrom-cafe)",
+                border: "2px solid rgba(255, 255, 255, 0.8)",
             }}
             animate={{
                 scale: isHovering ? 1.8 : 1.0,
-                backgroundColor: isHovering ? "var(--color-pao-dourado)" : "rgba(255, 255, 255, 0.15)",
-                borderColor: isHovering ? "var(--color-pao-escuro)" : "rgba(255, 255, 255, 0.5)",
-                borderWidth: isHovering ? 0 : 1.5,
+                backgroundColor: isHovering ? "var(--color-pao-dourado)" : "var(--color-marrom-cafe)",
+                borderColor: isHovering ? "var(--color-pao-escuro)" : "rgba(255, 255, 255, 0.8)",
+                borderWidth: isHovering ? 0 : 2,
             }}
             transition={{ type: "spring", stiffness: 350, damping: 24 }}
         >

@@ -13,63 +13,6 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
-const produtos = [
-    {
-        id: 1,
-        nome: "Pão Caseiro Tradicional",
-        desc: "Aquele pãozinho macio com cheiro de casa de vó, perfeito com manteiga derretida.",
-        preco: "R$ 12,00",
-        tag: "O Favorito",
-        bgColor: "bg-[var(--color-branco-quente)]",
-        imagem: "https://images.unsplash.com/photo-1559811814-e2c57b5e69df?q=80&w=687&auto=format&fit=crop"
-    },
-    {
-        id: 2,
-        nome: "Pão de Queijo & Pãozinhos",
-        desc: "Fornadas frescas a toda hora! Crocantes por fora e super macios por dentro.",
-        preco: "R$ 2,50",
-        tag: "Sempre Quentinho",
-        bgColor: "bg-[var(--color-creme)]",
-        imagem: "/images/pa__de_queijo___paezinhos.jpg"
-    },
-    {
-        id: 3,
-        nome: "Sonho Recheado",
-        desc: "Massa fofinha e açucarada com recheio generoso de doce de leite ou creme.",
-        preco: "R$ 6,50",
-        tag: "Mais Vendido",
-        bgColor: "bg-[var(--color-branco-quente)]",
-        imagem: "/images/sonho_recheado.jpg"
-    },
-    {
-        id: 4,
-        nome: "Pães Doces & Roscas",
-        desc: "Roscas trançadas com coco, pão doce com creme e fatias húngaras.",
-        preco: "R$ 8,00",
-        tag: "Para o Café",
-        bgColor: "bg-[var(--color-creme)]",
-        imagem: "/images/rosca_doce.jpg"
-    },
-    {
-        id: 5,
-        nome: "Bolos Caseiros",
-        desc: "Bolo de cenoura com chocolate, fubá cremoso e milho verde.",
-        preco: "R$ 22,00",
-        tag: "Feito com Carinho",
-        bgColor: "bg-[var(--color-branco-quente)]",
-        imagem: "/images/bolos_caseiros.jpg"
-    },
-    {
-        id: 6,
-        nome: "Salgados & Esfihas",
-        desc: "Esfihas de carne, frango, queijo e enroladinhos de salsicha fresquinhos.",
-        preco: "R$ 5,50",
-        tag: "Lanche Rápido",
-        bgColor: "bg-[var(--color-creme)]",
-        imagem: "/images/salgados_e_esfihas.jpg"
-    }
-];
-
 function Card3DTilt({ children, className, tag }: { children: React.ReactNode; className: string; tag: string }) {
     const cardRef = useRef<HTMLDivElement>(null);
     const [style, setStyle] = useState({ transform: "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)" });
@@ -110,7 +53,7 @@ function Card3DTilt({ children, className, tag }: { children: React.ReactNode; c
     );
 }
 
-export default function Vitrine() {
+export default function Vitrine({ produtos }: { produtos: any[] }) {
     const sectionRef = useRef<HTMLElement>(null);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -139,14 +82,18 @@ export default function Vitrine() {
         return () => window.removeEventListener("resize", checkPreferences);
     }, []);
 
-    const renderCardContent = (produto: typeof produtos[0]) => (
+    const renderCardContent = (produto: any) => {
+        const priceNumber = typeof produto.preco === 'number' ? produto.preco : parseFloat(String(produto.preco).replace('R$ ', '').replace(',', '.'));
+        const priceFormatted = typeof produto.preco === 'number' ? `R$ ${produto.preco.toFixed(2).replace('.', ',')}` : produto.preco;
+        
+        return (
         <>
             <div className="flex justify-between items-start w-full">
                 <span className="px-4 py-1.5 bg-[var(--color-marrom-cafe)] text-[var(--color-creme)] text-[11px] font-bold uppercase tracking-wider rounded-full shadow-sm">
-                    {produto.tag}
+                    {produto.tag || 'Destaque'}
                 </span>
                 <span className="text-xl font-bold font-serif text-[var(--color-terracota)]">
-                    {produto.preco}
+                    {priceFormatted}
                 </span>
             </div>
             <div className="relative h-48 w-full overflow-hidden rounded-2xl mb-5 mt-5">
@@ -167,12 +114,11 @@ export default function Vitrine() {
                 </p>
                 <button 
                     onClick={() => {
-                        const price = parseFloat(produto.preco.replace('R$ ', '').replace(',', '.'));
                         addItem({
                             id: produto.id + 200,
                             nome: produto.nome,
-                            preco: price,
-                            precoFormatado: produto.preco,
+                            preco: priceNumber,
+                            precoFormatado: priceFormatted,
                             imagem: produto.imagem
                         });
                     }}
@@ -183,7 +129,7 @@ export default function Vitrine() {
                 </button>
             </div>
         </>
-    );
+    )};
     return (
         <section
             ref={sectionRef}
