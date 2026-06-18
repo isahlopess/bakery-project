@@ -7,6 +7,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { motion } from "motion/react";
 import MagneticButton from "@/components/ui/MagneticButton";
+const BreadScene = dynamic(() => import("@/components/ui/BreadScene"), { ssr: false });
 
 function FlourParticles({ disabled }: { disabled: boolean }) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -252,22 +253,9 @@ export default function Hero() {
                     </button>
                 </div>
             </div>
-            <div className="hero-3d-container w-full md:w-[50%] h-[420px] sm:h-[480px] md:h-[580px] flex items-center justify-center relative select-none mt-8 md:mt-0">
-                <div
-                    className="w-full h-full relative flex items-center justify-center z-20 pointer-events-none scale-[0.25]"
-                    style={{ opacity: 0, animation: 'sketchfabReveal 0.8s ease-out 2.5s forwards' }}
-                >
-                    <iframe 
-                        title="Bakery Products collection" 
-                        frameBorder="0" 
-                        allowFullScreen 
-                        loading="lazy"
-                        allow="autoplay; fullscreen; xr-spatial-tracking" 
-                        src="https://sketchfab.com/models/5cc69d0b0ae244b1a7c5b26dfc2ca721/embed?autostart=1&autospin=0.3&transparent=1&ui_infos=0&ui_stop=0&ui_watermark=0&ui_watermark_link=0&ui_hint=0&ui_theme=dark&ui_inspector=0&ui_help=0&ui_settings=0&ui_vr=0&ui_fullscreen=0&ui_annotations=0&dnt=1" 
-                        className="absolute w-[400%] h-[400%] max-w-none left-[-150%] top-[-150%] pointer-events-none border-none outline-none"
-                        style={{ clipPath: 'inset(0 0 2% 2%)' }}
-                    />
-                </div>
+            <div className="hero-3d-container w-full md:w-[50%] h-[420px] sm:h-[480px] md:h-[580px] flex items-center justify-center relative mt-8 md:mt-0 z-20">
+                <BreadScene />
+                <div className="absolute -z-10 w-[550px] h-[550px] bg-[var(--color-glow-fumaca)] rounded-full blur-[120px] opacity-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5 pointer-events-none z-10 select-none">
                 <span className="text-[10px] font-bold uppercase tracking-[0.25em] text-[var(--color-creme)] opacity-50">
