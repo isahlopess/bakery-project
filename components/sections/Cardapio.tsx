@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence, PanInfo } from "motion/react";
 import { Coffee, Wheat, Cookie, Flame, Plus, Check, X, BookOpen, Download, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCart } from "@/lib/cartStore";
@@ -236,7 +236,7 @@ function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, on
                                                             document.body.style.overflow = 'hidden';
                                                         }}
                                                     >
-                                                        <Image src={item.imagem} alt={item.nome} fill className="object-cover" />
+                                                        <Image src={item.imagem} alt={item.nome} fill className="object-cover" unoptimized />
                                                     </div>
                                                     <h4 className="text-[15px] font-serif font-bold text-[var(--color-marrom-cafe)] group-hover:text-[var(--color-terracota)] transition-colors truncate">
                                                         {item.nome}
@@ -292,6 +292,13 @@ function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, on
 export default function Cardapio({ produtos = [] }: { produtos?: any[] }) {
     const [isOpen, setIsOpen] = useState(false);
     const [imagemExpandida, setImagemExpandida] = useState<string | null>(null);
+
+    useEffect(() => {
+        const handleOpenCardapio = () => setIsOpen(true);
+        window.addEventListener('openCardapio', handleOpenCardapio);
+        return () => window.removeEventListener('openCardapio', handleOpenCardapio);
+    }, []);
+
     return (
         <section
             id="cardapio"
@@ -334,6 +341,7 @@ export default function Cardapio({ produtos = [] }: { produtos?: any[] }) {
                                 alt="Imagem Expandida"
                                 fill
                                 className="object-cover transition-transform duration-500 ease-out scale-100 hover:scale-[1.02]"
+                                unoptimized
                             />
                         </motion.div>
                         <span className="text-white/60 mt-6 font-bold tracking-widest uppercase text-xs">

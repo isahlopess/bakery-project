@@ -102,6 +102,7 @@ export default function Vitrine({ produtos }: { produtos: any[] }) {
                     alt={produto.nome}
                     fill
                     className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
             </div>
@@ -163,7 +164,15 @@ export default function Vitrine({ produtos }: { produtos: any[] }) {
                                 {renderCardContent(produto)}
                             </Card3DTilt>
                         ))}
-                        <div className="vitrine-card flex-shrink-0 w-[70vw] sm:w-[260px] md:w-[300px] h-full max-h-[500px] rounded-3xl border-2 border-dashed border-[var(--color-pao-dourado)]/30 flex flex-col items-center justify-center p-6 text-center group cursor-pointer hover:border-[var(--color-pao-dourado)] transition-colors duration-300">
+                        <div 
+                            onClick={() => {
+                                document.getElementById('cardapio')?.scrollIntoView({ behavior: 'smooth' });
+                                setTimeout(() => {
+                                    window.dispatchEvent(new CustomEvent('openCardapio'));
+                                }, 600);
+                            }}
+                            className="vitrine-card flex-shrink-0 w-[70vw] sm:w-[260px] md:w-[300px] h-full max-h-[500px] rounded-3xl border-2 border-dashed border-[var(--color-pao-dourado)]/30 flex flex-col items-center justify-center p-6 text-center group cursor-pointer hover:border-[var(--color-pao-dourado)] transition-colors duration-300"
+                        >
                             <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-[var(--color-pao-dourado)]/10 text-[var(--color-pao-dourado)] flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300">
                                 <ArrowRight className="w-6 h-6 md:w-8 md:h-8" />
                             </div>
