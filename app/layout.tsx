@@ -3,8 +3,6 @@ import { Playfair_Display, Inter } from "next/font/google";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import "./globals.css";
 import CustomCursor from "@/components/ui/CustomCursor";
-import BreadProgressBar from "@/components/ui/BreadProgressBar";
-import Header from "@/components/layout/Header";
 import { CartProvider } from "@/lib/cartStore";
 
 const playfair = Playfair_Display({
@@ -43,11 +41,7 @@ export default function RootLayout({
         <body suppressHydrationWarning className={`${inter.variable} ${playfair.variable}`}>
         <div style={{ position: 'relative', zIndex: 1 }}>
             <CartProvider>
-                <SmoothScroll>
-                    <Header />
-                    <BreadProgressBar />
-                    {children}
-                </SmoothScroll>
+                {children}
             </CartProvider>
         </div>
         <div style={{ position: 'relative', zIndex: 999999, pointerEvents: 'none' }}>
