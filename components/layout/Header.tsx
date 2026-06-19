@@ -14,7 +14,15 @@ const menuLinks = [
     { nome: "Visite-nos", href: "/#visite-nos" }
 ];
 
-export default function Header() {
+interface HeaderProps {
+    store: {
+        name: string;
+        phone: string;
+        isOpen: boolean;
+    };
+}
+
+export default function Header({ store }: HeaderProps) {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
 
@@ -55,7 +63,7 @@ export default function Header() {
                 >
                     <Wheat className="w-6 h-6 text-[var(--color-pao-dourado)] group-hover:rotate-12 transition-transform duration-300" />
                     <span className="font-serif text-xl md:text-2xl font-bold tracking-tight">
-                        Padaria<span className="text-[var(--color-terracota)]">.</span>
+                        {store.name}<span className="text-[var(--color-terracota)]">.</span>
                     </span>
                 </Link>
                 <nav className="hidden md:flex items-center gap-8 font-semibold text-sm uppercase tracking-wider text-[var(--color-creme)]/80">
@@ -74,7 +82,7 @@ export default function Header() {
                     <div className="hidden md:block">
                         <MagneticButton>
                             <a
-                                href="https://wa.me/5599999999999"
+                                href={`https://wa.me/55${store.phone.replace(/\D/g, '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="px-6 py-2.5 bg-[var(--color-terracota)] hover:bg-[var(--color-pao-escuro)] text-[var(--color-creme)] text-sm font-bold uppercase tracking-wider rounded-full transition-colors duration-500 shadow-md cursor-hover-target"
@@ -84,7 +92,7 @@ export default function Header() {
                         </MagneticButton>
                     </div>
                     <div className="text-[var(--color-creme)] hover:text-[var(--color-pao-dourado)] transition-colors">
-                        <BreadBagCart />
+                        <BreadBagCart isStoreOpen={store.isOpen} />
                     </div>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
@@ -116,7 +124,7 @@ export default function Header() {
                                 </Link>
                             ))}
                             <a
-                                href="https://wa.me/5599999999999"
+                                href={`https://wa.me/55${store.phone.replace(/\D/g, '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="w-full py-4 bg-[var(--color-terracota)] text-center text-[var(--color-creme)] text-sm font-bold uppercase tracking-wider rounded-xl hover:bg-[var(--color-pao-escuro)] transition-colors mt-4"

@@ -8,7 +8,7 @@ import { useCart } from "@/lib/cartStore";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function BreadBagCart() {
+export default function BreadBagCart({ isStoreOpen = true }: { isStoreOpen?: boolean }) {
     const {
         items,
         removeItem,
@@ -78,6 +78,13 @@ export default function BreadBagCart() {
                                 <X className="w-5 h-5 text-[var(--color-marrom-cafe)]" />
                             </button>
                         </div>
+                        {!isStoreOpen && (
+                            <div className="bg-red-50 border-b border-red-100 px-6 py-3 flex items-center justify-center text-center">
+                                <span className="text-sm font-bold text-red-600">
+                                    Loja fechada. Pedidos temporariamente pausados.
+                                </span>
+                            </div>
+                        )}
                         <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-4 scrollbar-thin" data-lenis-prevent="true">
                             {items.length === 0 ? (
                                 <div className="flex flex-col items-center justify-center h-full text-center gap-4 select-none">
@@ -188,18 +195,24 @@ export default function BreadBagCart() {
                                     >
                                         Limpar
                                     </button>
-                                    <Link 
-                                        href="/checkout"
-                                        onClick={(e) => {
-                                            const target = e.currentTarget;
-                                            target.innerHTML = '<svg class="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processando...';
-                                            target.classList.add('opacity-80', 'cursor-wait');
-                                            setTimeout(() => setIsOpen(false), 2000);
-                                        }}
-                                        className="flex-1 bg-[var(--color-terracota)] text-white font-bold text-sm py-3 rounded-xl hover:bg-[var(--color-marrom-cafe)] transition-colors shadow-lg shadow-[var(--color-terracota)]/20 flex items-center justify-center gap-2"
-                                    >
-                                        Finalizar Compra
-                                    </Link>
+                                    {isStoreOpen ? (
+                                        <Link 
+                                            href="/checkout"
+                                            onClick={(e) => {
+                                                const target = e.currentTarget;
+                                                target.innerHTML = '<svg class="animate-spin w-5 h-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Processando...';
+                                                target.classList.add('opacity-80', 'cursor-wait');
+                                                setTimeout(() => setIsOpen(false), 2000);
+                                            }}
+                                            className="flex-1 bg-[var(--color-terracota)] text-white font-bold text-sm py-3 rounded-xl hover:bg-[var(--color-marrom-cafe)] transition-colors shadow-lg shadow-[var(--color-terracota)]/20 flex items-center justify-center gap-2"
+                                        >
+                                            Finalizar Compra
+                                        </Link>
+                                    ) : (
+                                        <div className="flex-1 bg-red-100 text-red-600 font-bold text-sm py-3 rounded-xl border border-red-200 flex items-center justify-center gap-2 cursor-not-allowed">
+                                            Loja Fechada
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}

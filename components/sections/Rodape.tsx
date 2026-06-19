@@ -3,7 +3,14 @@
 import { ArrowUp, Wheat, ShieldCheck } from "lucide-react";
 import MagneticButton from "@/components/ui/MagneticButton";
 
-export default function Rodape() {
+interface RodapeProps {
+    store: {
+        name: string;
+        phone: string;
+    };
+}
+
+export default function Rodape({ store }: RodapeProps) {
     const scrollToTop = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
@@ -19,7 +26,7 @@ export default function Rodape() {
                         <div className="flex items-center gap-2 text-[var(--color-pao-dourado)]">
                             <Wheat className="w-7 h-7 sm:w-8 sm:h-8" />
                             <span className="font-serif text-xl sm:text-2xl font-bold tracking-tight">
-                                Padaria<span className="text-[var(--color-terracota)]">.</span>
+                                {store.name}<span className="text-[var(--color-terracota)]">.</span>
                             </span>
                         </div>
                         <p className="text-[#A59286] text-sm leading-relaxed font-medium max-w-xs">
@@ -106,7 +113,7 @@ export default function Rodape() {
                 </div>
                 <div className="border-t border-[var(--color-marrom-cafe)] pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
                     <p className="text-[10px] sm:text-xs font-medium text-[#7C695E] text-center sm:text-left">
-                        © {new Date().getFullYear()} Padaria do Bairro. Todos os direitos reservados.
+                        © {new Date().getFullYear()} {store.name}. Todos os direitos reservados.
                     </p>
                     <MagneticButton>
                         <button

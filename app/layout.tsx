@@ -15,23 +15,28 @@ const inter = Inter({
     variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
-    title: "Padaria Artesanal | O Aroma da Tradição",
-    description: "Pães artesanais quentinhos, fermentação natural e aconchego em cada fornada.",
-    keywords: ["padaria artesanal", "fermentação natural", "levain", "pão quentinho", "gastronomia"],
-    icons: {
-        icon: [
-            { url: "/images/favicon/favicon.ico" },
-            { url: "/images/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
-            { url: "/images/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-            { url: "/images/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
-            { url: "/images/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
-        ],
-        apple: [
-            { url: "/images/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
-        ]
-    }
-};
+import { getStoreSettings } from "@/app/actions/config";
+
+export async function generateMetadata(): Promise<Metadata> {
+    const store = await getStoreSettings();
+    return {
+        title: `${store.name} | O Aroma da Tradição`,
+        description: "Pães artesanais quentinhos, fermentação natural e aconchego em cada fornada.",
+        keywords: ["padaria artesanal", "fermentação natural", "levain", "pão quentinho", "gastronomia"],
+        icons: {
+            icon: [
+                { url: "/images/favicon/favicon.ico" },
+                { url: "/images/favicon/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+                { url: "/images/favicon/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+                { url: "/images/favicon/android-chrome-192x192.png", sizes: "192x192", type: "image/png" },
+                { url: "/images/favicon/android-chrome-512x512.png", sizes: "512x512", type: "image/png" },
+            ],
+            apple: [
+                { url: "/images/favicon/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+            ]
+        }
+    };
+}
 
 export default function RootLayout({
                                        children,

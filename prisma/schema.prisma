@@ -51,3 +51,14 @@ model OrderItem {
   preco     Float
   quantidade Int
 }
+
+model StoreSettings {
+  id        Int      @id @default(1)
+  name      String   @default("Padaria Artesanal")
+  openTime  String   @default("06:00")
+  closeTime String   @default("20:00")
+  phone     String   @default("(11) 99999-9999")
+  address   String   @default("Rua da Farinha, 123")
+  isOpen    Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}

@@ -6,10 +6,14 @@ import VisiteNos from "@/components/sections/VisiteNos";
 import Newsletter from "@/components/sections/Newsletter";
 import Rodape from "@/components/sections/Rodape";
 import prisma from "@/lib/prisma";
+import { getStoreSettings } from "@/app/actions/config";
+
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
     const vitrineProducts = await prisma.product.findMany({ where: { categoria: "vitrine" } });
     const cardapioProducts = await prisma.product.findMany({ where: { categoria: "cardapio" } });
+    const storeSettings = await getStoreSettings();
 
     return (
         <main className="w-full min-h-screen">
@@ -17,9 +21,9 @@ export default async function Home() {
             <Vitrine produtos={vitrineProducts} />
             <Cardapio produtos={cardapioProducts} />
             <Depoimentos />
-            <VisiteNos />
+            <VisiteNos store={storeSettings} />
             <Newsletter />
-            <Rodape />
+            <Rodape store={storeSettings} />
         </main>
     );
 }

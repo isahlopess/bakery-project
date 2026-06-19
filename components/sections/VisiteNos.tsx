@@ -4,7 +4,17 @@ import { useRef, useState, useEffect } from "react";
 import { Clock, MapPin, Phone, Volume2, VolumeX } from "lucide-react";
 import MagneticButton from "@/components/ui/MagneticButton";
 
-export default function VisiteNos() {
+interface VisiteNosProps {
+    store: {
+        name: string;
+        openTime: string;
+        closeTime: string;
+        phone: string;
+        address: string;
+    };
+}
+
+export default function VisiteNos({ store }: VisiteNosProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const audioCtxRef = useRef<AudioContext | null>(null);
     const audioCleanupRef = useRef<{ stop: () => void } | null>(null);
@@ -132,7 +142,7 @@ export default function VisiteNos() {
                                     Endereço
                                 </h4>
                                 <p className="text-[#D3C1B5] text-sm sm:text-base font-medium">
-                                    Alameda dos Trigos, 452 — Bairro Jardim do Trigo, São Paulo
+                                    {store.address}
                                 </p>
                             </div>
                         </div>
@@ -145,8 +155,7 @@ export default function VisiteNos() {
                                     Horário de Funcionamento
                                 </h4>
                                 <p className="text-[#D3C1B5] text-sm sm:text-base font-medium">
-                                    Terça a Sábado: 07h às 19h <br />
-                                    Domingo e Feriados: 07h às 13h
+                                    Aberto todos os dias: {store.openTime} às {store.closeTime}
                                 </p>
                             </div>
                         </div>
@@ -159,7 +168,7 @@ export default function VisiteNos() {
                                     Contato Direto
                                 </h4>
                                 <p className="text-[#D3C1B5] text-sm sm:text-base font-medium">
-                                    (99) 99999-9999 — Encomendas sazonais
+                                    {store.phone} — Encomendas e dúvidas
                                 </p>
                             </div>
                         </div>
@@ -167,7 +176,7 @@ export default function VisiteNos() {
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 w-full sm:w-auto">
                         <MagneticButton>
                             <a
-                                href="https://wa.me/5599999999999"
+                                href={`https://wa.me/55${store.phone.replace(/\D/g, '')}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="px-6 sm:px-8 py-3.5 sm:py-4 bg-[var(--color-terracota)] text-[var(--color-creme)] rounded-full font-bold text-base sm:text-lg shadow-[0_10px_30px_rgba(181,87,43,0.3)] hover:bg-[var(--color-pao-dourado)] transition-colors duration-500 hover:shadow-[0_15px_35px_rgba(217,160,91,0.25)] cursor-hover-target text-center"
@@ -225,7 +234,7 @@ export default function VisiteNos() {
                         <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4 bg-[var(--color-marrom-profundo)]/95 border border-[var(--color-pao-dourado)]/10 rounded-xl sm:rounded-2xl p-3 sm:p-4 flex justify-between items-center z-10 select-none">
                             <div className="min-w-0 mr-3">
                                 <h5 className="text-xs sm:text-sm font-bold text-[var(--color-branco-quente)] truncate">
-                                    Alameda dos Trigos, 452
+                                    {store.address}
                                 </h5>
                                 <p className="text-[10px] sm:text-xs text-[var(--color-pao-dourado)] truncate">
                                     Fácil acesso com estacionamento
