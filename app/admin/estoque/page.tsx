@@ -4,9 +4,11 @@ import EstoqueClient from "@/components/admin/EstoqueClient";
 export const dynamic = "force-dynamic";
 
 export default async function EstoquePage() {
-  const products = await prisma.product.findMany({
+  const allProducts = await prisma.product.findMany({
     orderBy: { nome: "asc" },
   });
+
+  const products = allProducts.filter(p => p.categoria?.toLowerCase() !== "vitrine");
 
   const serialized = products.map((p) => ({
     id: p.id,
