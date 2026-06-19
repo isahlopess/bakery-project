@@ -199,9 +199,9 @@ export default function Hero() {
                     fill
                     priority
                     className="object-cover"
-                    style={{ filter: 'blur(6px)' }}
+                    style={{ filter: 'blur(8px)' }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#1A0A04]/90 via-[#1A0A04]/75 to-[#1A0A04]/50" />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-marrom-profundo)]/95 via-[var(--color-marrom-profundo)]/85 to-transparent" />
             </div>
             <FlourParticles disabled={isReducedMotion} />
             <div className="absolute left-6 bottom-24 hidden lg:flex flex-col items-start gap-1 select-none pointer-events-none opacity-50">
@@ -237,7 +237,7 @@ export default function Hero() {
                                 const target = document.getElementById("cardapio");
                                 if (target) target.scrollIntoView({ behavior: "smooth" });
                             }}
-                            className="px-8 py-4 bg-[var(--color-terracota)] text-[var(--color-creme)] rounded-full font-bold text-lg shadow-[0_10px_35px_rgba(181,87,43,0.25)] hover:bg-[var(--color-pao-escuro)] transition-colors duration-500 hover:shadow-[0_15px_40px_rgba(181,87,43,0.4)] cursor-hover-target"
+                            className="px-8 py-4 bg-[var(--color-terracota)] text-[var(--color-creme)] rounded-full font-bold text-lg shadow-[0_10px_35px_rgba(166,75,42,0.3)] hover:bg-[var(--color-pao-escuro)] transition-colors duration-500 hover:shadow-[0_15px_40px_rgba(166,75,42,0.5)] cursor-hover-target"
                         >
                             Ver Cardápio Do Dia
                         </button>

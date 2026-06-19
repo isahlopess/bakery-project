@@ -58,7 +58,7 @@ export default function BreadBagCart() {
                         animate={{ x: 0 }}
                         exit={{ x: "100%" }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="fixed inset-y-0 right-0 w-full sm:w-[420px] sm:max-w-[420px] h-screen bg-[var(--color-creme)] shadow-[-20px_0_60px_rgba(0,0,0,0.15)] z-[9999] flex flex-col overscroll-contain"
+                        className="fixed inset-y-0 right-0 w-full sm:w-[420px] sm:max-w-[420px] h-screen bg-[var(--color-creme)]/85 backdrop-blur-2xl border-l border-white/40 shadow-[-20px_0_60px_rgba(42,29,22,0.1)] z-[9999] flex flex-col overscroll-contain"
                     >
                         <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--color-pao-dourado)]/15 flex-shrink-0">
                             <div className="flex items-center gap-3">
@@ -104,7 +104,7 @@ export default function BreadBagCart() {
                                                 animate={{ opacity: 1, x: 0 }}
                                                 exit={{ opacity: 0, x: -30, height: 0 }}
                                                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                                                className="flex gap-4 p-3 bg-[var(--color-branco-quente)] rounded-2xl border border-[var(--color-pao-dourado)]/10 shadow-xs"
+                                                className="flex gap-4 p-3 glass-card rounded-2xl border border-white/50"
                                             >
                                                 <div className="w-20 h-20 relative rounded-xl overflow-hidden flex-shrink-0 border border-[var(--color-pao-dourado)]/10">
                                                     <Image
@@ -174,10 +174,10 @@ export default function BreadBagCart() {
                             )}
                         </div>
                         {items.length > 0 && (
-                            <div className="p-6 border-t border-[var(--color-pao-dourado)]/15 bg-[var(--color-creme)] flex-shrink-0">
+                            <div className="p-6 border-t border-[var(--color-pao-dourado)]/15 bg-[var(--color-creme)]/40 backdrop-blur-md flex-shrink-0">
                                 <div className="flex items-center justify-between mb-4">
                                     <span className="text-[15px] font-bold text-[var(--color-pao-escuro)]">Subtotal</span>
-                                    <span className="text-xl font-serif font-bold text-[var(--color-marrom-cafe)]">
+                                    <span className="text-2xl font-serif font-bold text-[var(--color-marrom-profundo)]">
                                         {getTotalFormatado()}
                                     </span>
                                 </div>
