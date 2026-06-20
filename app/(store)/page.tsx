@@ -11,8 +11,8 @@ import { getStoreSettings } from "@/app/actions/config";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-    const vitrineProducts = await prisma.product.findMany({ where: { categoria: "vitrine" } });
-    const cardapioProducts = await prisma.product.findMany({ where: { categoria: "cardapio" } });
+    const vitrineProducts = await prisma.product.findMany({ where: { categoria: { in: ["vitrine", "ambos"] } }, orderBy: { ordemExibicao: 'asc' } });
+    const cardapioProducts = await prisma.product.findMany({ where: { categoria: { in: ["cardapio", "ambos"] } }, orderBy: { ordemExibicao: 'asc' } });
     const storeSettings = await getStoreSettings();
 
     return (

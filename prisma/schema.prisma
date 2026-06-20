@@ -12,7 +12,7 @@ model User {
   name      String
   email     String   @unique
   password  String
-  role      String   @default("ADMIN") // Only for the bakery owner
+  role      String   @default("ADMIN")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -25,8 +25,9 @@ model Product {
   imagem      String
   tag         String?
   bgColor     String   @default("bg-[var(--color-branco-quente)]")
-  estoque     Int      @default(0) // Illustrative
-  categoria   String   @default("GERAL") // e.g., 'vitrine', 'cardapio'
+  estoque     Int      @default(0)
+  categoria   String   @default("GERAL")
+  ordemExibicao Int    @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -37,7 +38,7 @@ model Order {
   customerEmail String?
   customerPhone String?
   total       Float
-  status      String   @default("NOVO") // NOVO, PREPARANDO, PRONTO, CONCLUIDO
+  status      String   @default("NOVO")
   items       OrderItem[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

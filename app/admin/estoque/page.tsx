@@ -8,9 +8,7 @@ export default async function EstoquePage() {
     orderBy: { nome: "asc" },
   });
 
-  const products = allProducts.filter(p => p.categoria?.toLowerCase() !== "vitrine");
-
-  const serialized = products.map((p) => ({
+  const serialized = allProducts.map((p) => ({
     id: p.id,
     nome: p.nome,
     desc: p.desc,
@@ -18,6 +16,7 @@ export default async function EstoquePage() {
     imagem: p.imagem,
     estoque: p.estoque,
     categoria: p.categoria,
+    ordemExibicao: p.ordemExibicao,
   }));
 
   return <EstoqueClient products={serialized} />;
