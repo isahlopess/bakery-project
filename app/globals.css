@@ -44,6 +44,15 @@
     }
   }
 
+  @media print {
+    aside {
+      display: none !important;
+    }
+    body, main {
+      background: white !important;
+    }
+  }
+
   body {
     @apply bg-creme text-marrom-profundo font-sans antialiased;
     background-image:

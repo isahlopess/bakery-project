@@ -13,11 +13,13 @@ import {
   ChevronLeft,
   Menu,
   X,
+  BarChart3,
 } from "lucide-react";
 import { logOut } from "@/app/actions/auth";
 
 const navItems = [
   { href: "/admin", label: "Visão Geral", icon: LayoutDashboard },
+  { href: "/admin/relatorios", label: "Relatórios", icon: BarChart3 },
   { href: "/admin/estoque", label: "Estoque", icon: Package },
   { href: "/admin/configuracoes", label: "Configurações", icon: Settings },
 ];
