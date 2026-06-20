@@ -10,7 +10,7 @@ export default async function AdminDashboard() {
   });
 
   const products = await prisma.product.findMany();
-  const lowStockCount = products.filter((p) => p.estoque <= 5).length;
+  const lowStockCount = products.filter((p) => p.categoria?.toLowerCase() !== "vitrine" && p.estoque <= 5).length;
 
   const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
   const totalOrders = orders.length;

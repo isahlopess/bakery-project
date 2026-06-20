@@ -181,6 +181,11 @@ export default function DashboardClient({
   const greeting = getGreeting();
   const GreetingIcon = greeting.icon;
   const [visibleCount, setVisibleCount] = useState(10);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const stats = [
     {
@@ -218,7 +223,7 @@ export default function DashboardClient({
       labelColor: "text-white/80",
     },
     {
-      label: "Estoque Baixo",
+      label: "Estoque Crítico",
       value: lowStockCount,
       prefix: "",
       icon: PackageCheck,
@@ -344,9 +349,9 @@ export default function DashboardClient({
                     {" "}{order.customerName.toUpperCase()}
                   </p>
                   <p className="text-xs text-[#1A110C]/50">
-                    {new Date(order.createdAt).toLocaleString("pt-BR", {
+                    {mounted ? new Date(order.createdAt).toLocaleString("pt-BR", {
                       day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
-                    })}
+                    }) : "..."}
                   </p>
                 </div>
                 <span className="text-sm font-bold text-[#1A110C]/80 whitespace-nowrap">
@@ -453,9 +458,9 @@ export default function DashboardClient({
                       R$ {order.total.toFixed(2).replace(".", ",")}
                     </td>
                     <td className="px-6 py-4 text-sm text-[#1A110C]/50 hidden sm:table-cell">
-                      {new Date(order.createdAt).toLocaleString("pt-BR", {
+                      {mounted ? new Date(order.createdAt).toLocaleString("pt-BR", {
                         day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit"
-                      })}
+                      }) : "..."}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${statusColors[order.status] || "bg-gray-100 text-gray-600"}`}>
