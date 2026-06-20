@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "motion/react";
 import {
   Wheat,
@@ -19,9 +20,9 @@ import { logOut } from "@/app/actions/auth";
 
 const navItems = [
   { href: "/admin", label: "Visão Geral", icon: LayoutDashboard },
-  { href: "/admin/relatorios", label: "Relatórios", icon: BarChart3 },
-  { href: "/admin/estoque", label: "Estoque", icon: Package },
-  { href: "/admin/configuracoes", label: "Configurações", icon: Settings },
+  { href: "/admin/relatorios", label: "Resultados", icon: BarChart3 },
+  { href: "/admin/estoque", label: "Catálogo", icon: Package },
+  { href: "/admin/configuracoes", label: "Ajustes", icon: Settings },
 ];
 
 export default function AdminSidebar() {
@@ -51,7 +52,9 @@ export default function AdminSidebar() {
     <>
       <div className={`p-4 border-b border-white/10 ${collapsed ? "px-3" : "px-5"}`}>
         <Link href="/" className="flex items-center gap-2 text-[var(--color-pao-dourado)] hover:text-white transition-colors group">
-          <Wheat className="w-8 h-8 flex-shrink-0 group-hover:rotate-12 transition-transform duration-300" />
+          <div className="w-8 h-8 flex items-center justify-center relative overflow-hidden rounded-md group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
+             <Image src="/images/favicon/favicon-32x32.png" alt="Logo" fill className="object-contain" unoptimized />
+          </div>
           {!collapsed && (
             <span className="font-serif text-2xl font-bold tracking-tight text-[var(--color-creme)] group-hover:text-white transition-colors whitespace-nowrap">
               Padaria<span className="text-[var(--color-terracota)]">.</span>
@@ -137,7 +140,9 @@ export default function AdminSidebar() {
       </aside>
       <div className="md:hidden fixed top-0 left-0 right-0 bg-[#1A110C] text-[var(--color-creme)] px-4 py-3 flex justify-between items-center z-50 border-b border-white/5">
         <Link href="/" className="flex items-center gap-2 text-[var(--color-pao-dourado)]">
-          <Wheat className="w-6 h-6" />
+          <div className="w-6 h-6 relative overflow-hidden rounded-sm flex-shrink-0">
+             <Image src="/images/favicon/favicon-32x32.png" alt="Logo" fill className="object-contain" unoptimized />
+          </div>
           <span className="font-serif text-xl font-bold text-[var(--color-creme)]">
             Padaria<span className="text-[var(--color-terracota)]">.</span>
           </span>

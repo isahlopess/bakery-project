@@ -27,6 +27,7 @@ model Product {
   bgColor     String   @default("bg-[var(--color-branco-quente)]")
   estoque     Int      @default(0)
   categoria   String   @default("GERAL")
+  tipo        String   @default("paes")
   ordemExibicao Int    @default(0)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

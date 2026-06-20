@@ -130,7 +130,9 @@ function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, on
         precoFormatado: typeof p.preco === 'number' ? `R$ ${p.preco.toFixed(2).replace('.', ',')}` : p.preco
     }));
 
-    const itensFiltrados = categoriaAtiva === "todos" ? processados : processados.filter(i => i.categoria === categoriaAtiva);
+    const itensFiltrados = categoriaAtiva === "todos" 
+        ? processados 
+        : processados.filter(i => i.tipo === categoriaAtiva);
 
     const totalPaginas = Math.ceil(itensFiltrados.length / ITEMS_PER_PAGE);
     const itensPagina = itensFiltrados.slice(pagina * ITEMS_PER_PAGE, (pagina + 1) * ITEMS_PER_PAGE);

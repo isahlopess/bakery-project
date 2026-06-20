@@ -32,7 +32,8 @@ export async function createProduto(formData: FormData) {
   const preco = parseFloat(formData.get("preco") as string);
   const estoque = parseInt(formData.get("estoque") as string, 10);
   const categoria = formData.get("categoria") as string;
-  const tag = (formData.get("tag") as string) || null;
+  const tipo = formData.get("tipo") as string || "paes";
+  const tag = formData.get("tag") as string | null;
   const imageFile = formData.get("imagem") as File | null;
 
   let imagemUrl = "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=600&q=80";
@@ -51,6 +52,7 @@ export async function createProduto(formData: FormData) {
       preco,
       estoque,
       categoria,
+      tipo,
       tag,
       imagem: imagemUrl,
       ordemExibicao: 999,
@@ -68,17 +70,16 @@ export async function updateProduto(formData: FormData) {
   const preco = parseFloat(formData.get("preco") as string);
   const estoque = parseInt(formData.get("estoque") as string, 10);
   const categoria = formData.get("categoria") as string;
+  const tipo = formData.get("tipo") as string || "paes";
   const imageFile = formData.get("imagem") as File | null;
 
   const dataToUpdate: Prisma.ProductUpdateInput = {
     nome,
     preco,
     estoque,
+    categoria,
+    tipo,
   };
-
-  if (categoria) {
-    dataToUpdate.categoria = categoria;
-  }
 
   if (imageFile && imageFile.size > 0) {
     dataToUpdate.imagem = await saveImage(imageFile);

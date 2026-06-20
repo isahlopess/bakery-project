@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, useRef } from "react";
+import React, { useState, useTransition, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, Package, Plus, Minus, X, Check, AlertTriangle, Layers, TrendingDown, XCircle, Tag, DollarSign, Edit3, Grid, ArrowUp, ArrowDown, Upload, AlignJustify, Image as ImageIcon, Trash2 } from "lucide-react";
 import Image from "next/image";
@@ -14,6 +14,7 @@ interface Product {
   imagem: string;
   estoque: number;
   categoria: string;
+  tipo: string;
   ordemExibicao: number;
 }
 
@@ -42,6 +43,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
   const [editPrice, setEditPrice] = useState(0);
   const [editNome, setEditNome] = useState("");
   const [editCategoria, setEditCategoria] = useState("vitrine");
+  const [editTipo, setEditTipo] = useState("paes");
   const [editFile, setEditFile] = useState<File | null>(null);
   const [editPreview, setEditPreview] = useState("");
   const editFileInputRef = useRef<HTMLInputElement>(null);
@@ -52,6 +54,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
   const [addPreco, setAddPreco] = useState(0);
   const [addEstoque, setAddEstoque] = useState(0);
   const [addCategoria, setAddCategoria] = useState("vitrine");
+  const [addTipo, setAddTipo] = useState("paes");
   const [addTag, setAddTag] = useState("");
   const [addFile, setAddFile] = useState<File | null>(null);
   const [addPreview, setAddPreview] = useState("");
@@ -125,6 +128,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
     setEditPrice(product.preco);
     setEditNome(product.nome);
     setEditCategoria(product.categoria);
+    setEditTipo(product.tipo || "paes");
     setEditPreview(product.imagem);
     setEditFile(null);
   };
@@ -147,6 +151,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
         formData.append("preco", editPrice.toString());
         formData.append("estoque", editQty.toString());
         formData.append("categoria", editCategoria);
+        formData.append("tipo", editTipo);
         if (editFile) formData.append("imagem", editFile);
 
         await updateProduto(formData);
@@ -190,13 +195,14 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
         formData.append("preco", addPreco.toString());
         formData.append("estoque", addEstoque.toString());
         formData.append("categoria", addCategoria);
+        formData.append("tipo", addTipo);
         if (addTag) formData.append("tag", addTag);
         if (addFile) formData.append("imagem", addFile);
 
         await createProduto(formData);
         setIsAdding(false);
 
-        setAddNome(""); setAddDesc(""); setAddPreco(0); setAddEstoque(0); setAddTag(""); setAddFile(null); setAddPreview("");
+        setAddNome(""); setAddDesc(""); setAddPreco(0); setAddEstoque(0); setAddTag(""); setAddFile(null); setAddPreview(""); setAddTipo("paes");
         showNotification("Produto cadastrado com sucesso!");
       } catch (err) {
         showNotification("Erro ao cadastrar produto.", "error");
@@ -395,7 +401,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setFilterCategory("ALL")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterCategory === "ALL" ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>Todos</button>
               {[{ id: "SALGADO", label: "Salgados" }, { id: "DOCE", label: "Doces" }, { id: "BEBIDA", label: "Bebidas" }].map(c => (
-                <button key={c.id} onClick={() => setFilterCategory(c.id as any)} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterCategory === c.id ? "bg-[var(--color-pao-dourado)] text-[#1A110C] border-[var(--color-pao-dourado)]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{c.label}</button>
+                <button key={c.id} onClick={() => setFilterCategory(c.id as "ALL" | "DOCE" | "SALGADO" | "BEBIDA")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterCategory === c.id ? "bg-[var(--color-pao-dourado)] text-[#1A110C] border-[var(--color-pao-dourado)]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{c.label}</button>
               ))}
             </div>
           </div>
@@ -407,7 +413,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
             <div className="flex flex-wrap gap-2">
               <button onClick={() => setFilterSection("ALL")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterSection === "ALL" ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>Todas</button>
               {[{ id: "VITRINE", label: "Vitrine" }, { id: "CARDAPIO", label: "Cardápio" }, { id: "AMBOS", label: "Ambos" }].map(c => (
-                <button key={c.id} onClick={() => setFilterSection(c.id as any)} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterSection === c.id ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{c.label}</button>
+                <button key={c.id} onClick={() => setFilterSection(c.id as "ALL" | "VITRINE" | "CARDAPIO" | "AMBOS")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterSection === c.id ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{c.label}</button>
               ))}
             </div>
           </div>
@@ -423,7 +429,7 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
                 { id: "BAIXO", label: "Baixo", color: "bg-amber-500 text-white border-amber-500" },
                 { id: "ZERADO", label: "Zerado", color: "bg-red-500 text-white border-red-500" }
               ].map(f => (
-                <button key={f.id} onClick={() => setFilterStatus(f.id as any)} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterStatus === f.id ? f.color : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{f.label}</button>
+                <button key={f.id} onClick={() => setFilterStatus(f.id as "ALL" | "NORMAL" | "BAIXO" | "ZERADO")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterStatus === f.id ? f.color : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{f.label}</button>
               ))}
             </div>
           </div>
@@ -537,6 +543,14 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
                     <input type="number" value={editQty} onChange={(e) => setEditQty(Math.max(0, parseInt(e.target.value) || 0))} min={0} className="w-full bg-white border border-[#1A110C]/10 rounded-xl p-3 text-sm font-bold text-[#1A110C] focus:outline-none focus:border-[var(--color-pao-dourado)]" />
                   </div>
                 </div>
+                <div>
+                  <label className="text-xs font-bold text-[#1A110C]/50 uppercase tracking-wider mb-2 block">Tipo de Produto</label>
+                  <select value={editTipo} onChange={(e) => setEditTipo(e.target.value)} className="w-full bg-white border border-[#1A110C]/10 rounded-xl p-3 text-sm font-bold text-[#1A110C] focus:outline-none focus:border-[var(--color-pao-dourado)]">
+                    <option value="paes">Pães e Salgados</option>
+                    <option value="doces">Doces e Bolos</option>
+                    <option value="bebidas">Cafés e Bebidas</option>
+                  </select>
+                </div>
               </div>
               {isDeleting ? (
                 <div className="flex flex-col gap-3">
@@ -624,9 +638,17 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
                     </select>
                   </div>
                   <div>
-                    <label className="text-xs font-bold text-[#1A110C]/50 uppercase tracking-wider mb-2 block">Etiqueta</label>
-                    <input type="text" value={addTag} onChange={(e) => setAddTag(e.target.value)} placeholder="Ex: Novo!" className="w-full bg-white border border-[#1A110C]/10 rounded-xl p-3 text-sm font-bold text-[#1A110C] focus:outline-none focus:border-[var(--color-pao-dourado)]" />
+                    <label className="text-xs font-bold text-[#1A110C]/50 uppercase tracking-wider mb-2 block">Tipo de Produto</label>
+                    <select value={addTipo} onChange={(e) => setAddTipo(e.target.value)} className="w-full bg-white border border-[#1A110C]/10 rounded-xl p-3 text-sm font-bold text-[#1A110C] focus:outline-none focus:border-[var(--color-pao-dourado)]">
+                      <option value="paes">Pães e Salgados</option>
+                      <option value="doces">Doces e Bolos</option>
+                      <option value="bebidas">Cafés e Bebidas</option>
+                    </select>
                   </div>
+                </div>
+                <div className="mt-4">
+                  <label className="text-xs font-bold text-[#1A110C]/50 uppercase tracking-wider mb-2 block">Etiqueta Especial (Opcional)</label>
+                  <input type="text" value={addTag} onChange={(e) => setAddTag(e.target.value)} placeholder="Ex: Novo!" className="w-full bg-white border border-[#1A110C]/10 rounded-xl p-3 text-sm font-bold text-[#1A110C] focus:outline-none focus:border-[var(--color-pao-dourado)]" />
                 </div>
               </div>
               <button onClick={handleSaveAdd} disabled={isPending || !addNome || !addDesc} className="w-full py-4 bg-[#1A110C] text-white font-bold rounded-xl transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:transform-none flex items-center justify-center gap-2">
@@ -699,8 +721,6 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
           </>
         )}
       </AnimatePresence>
-
-      {/* Global Notifications Wrapper */}
       <AnimatePresence>
         {notification && (
           <motion.div
