@@ -4,18 +4,35 @@ import DashboardClient from "@/components/admin/DashboardClient";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboard() {
-  const orders = await prisma.order.findMany({
+  const totals = await prisma.order.aggregate({
+    _sum: { total: true },
+    _count: { id: true },
+  });
+  
+  const totalRevenue = totals._sum.total || 0;
+  const totalOrders = totals._count.id || 0;
+
+  const recentOrdersRaw = await prisma.order.findMany({
+    take: 20,
     orderBy: { createdAt: "desc" },
     include: { items: true },
   });
 
-  const products = await prisma.product.findMany();
+  const products = await prisma.product.findMany({
+    select: { categoria: true, estoque: true }
+  });
   const lowStockCount = products.filter((p) => p.categoria?.toLowerCase() !== "vitrine" && p.estoque <= 5).length;
 
-  const totalRevenue = orders.reduce((sum, order) => sum + order.total, 0);
-  const totalOrders = orders.length;
-
   const now = new Date();
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(now.getDate() - 7);
+  sevenDaysAgo.setHours(0, 0, 0, 0);
+
+  const last7DaysOrders = await prisma.order.findMany({
+    where: { createdAt: { gte: sevenDaysAgo } },
+    select: { createdAt: true }
+  });
+
   const daysOfWeek = ["domingo", "segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado"];
   
   const salesWithDays = Array.from({ length: 7 }, (_, i) => {
@@ -24,10 +41,12 @@ export default async function AdminDashboard() {
     day.setHours(0, 0, 0, 0);
     const nextDay = new Date(day);
     nextDay.setDate(nextDay.getDate() + 1);
-    const count = orders.filter((o) => {
+    
+    const count = last7DaysOrders.filter((o) => {
       const d = new Date(o.createdAt);
       return d >= day && d < nextDay;
     }).length;
+    
     return { count, dayName: daysOfWeek[day.getDay()] };
   });
 
@@ -40,7 +59,7 @@ export default async function AdminDashboard() {
     insightText = `O dia de maior movimento foi ${bestDayObj.dayName} com ${bestDayObj.count} pedidos! Uma ótima oportunidade para focar a produção nesse dia da semana.`;
   }
 
-  const serializedOrders = orders.map((o) => ({
+  const serializedOrders = recentOrdersRaw.map((o) => ({
     id: o.id,
     customerName: o.customerName,
     customerPhone: o.customerPhone,
@@ -65,4 +84,3 @@ export default async function AdminDashboard() {
     />
   );
 }
-

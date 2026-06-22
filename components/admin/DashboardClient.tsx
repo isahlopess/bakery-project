@@ -463,9 +463,27 @@ export default function DashboardClient({
                       }) : "..."}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold ${statusColors[order.status] || "bg-gray-100 text-gray-600"}`}>
-                        {statusLabels[order.status] || order.status}
-                      </span>
+                        <div className="relative inline-block">
+                          <select
+                            value={order.status}
+                            onChange={async (e) => {
+                              const newStatus = e.target.value;
+                              const { updateOrderStatus } = await import('@/app/actions/checkout');
+                              await updateOrderStatus(order.id, newStatus);
+                              window.location.reload();
+                            }}
+                            style={{ width: order.status === 'NOVO' ? '70px' : order.status === 'PREPARANDO' ? '105px' : order.status === 'PRONTO' ? '80px' : '95px' }}
+                            className={`text-[11px] font-bold rounded-full pl-3 pr-5 py-1.5 cursor-pointer focus:outline-none appearance-none transition-all text-center ${statusColors[order.status] || "bg-gray-100 text-gray-600"}`}
+                          >
+                            <option value="NOVO">Novo</option>
+                            <option value="PREPARANDO">Preparando</option>
+                            <option value="PRONTO">Pronto</option>
+                            <option value="CONCLUIDO">Concluído</option>
+                          </select>
+                          <svg className={`absolute right-2 top-1/2 -translate-y-1/2 w-2.5 h-2.5 pointer-events-none opacity-50 ${statusColors[order.status] ? '' : 'text-gray-600'}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                          </svg>
+                        </div>
                     </td>
                   </tr>
                 ))
