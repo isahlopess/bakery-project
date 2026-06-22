@@ -15,14 +15,33 @@ import {
   Menu,
   X,
   BarChart3,
+  ChefHat,
+  TrendingUp,
 } from "lucide-react";
 import { logOut } from "@/app/actions/auth";
 
-const navItems = [
-  { href: "/admin", label: "Visão Geral", icon: LayoutDashboard },
-  { href: "/admin/relatorios", label: "Resultados", icon: BarChart3 },
-  { href: "/admin/estoque", label: "Catálogo", icon: Package },
-  { href: "/admin/configuracoes", label: "Ajustes", icon: Settings },
+const navGroups = [
+  {
+    title: "Gestão",
+    items: [
+      { href: "/admin", label: "Visão Geral", icon: LayoutDashboard },
+      { href: "/admin/relatorios", label: "Performance", icon: BarChart3 },
+      { href: "/admin/lucro", label: "Lucro Real", icon: TrendingUp },
+    ]
+  },
+  {
+    title: "Produção",
+    items: [
+      { href: "/admin/estoque", label: "Catálogo", icon: Package },
+      { href: "/admin/insumos", label: "Insumos", icon: ChefHat },
+    ]
+  },
+  {
+    title: "Sistema",
+    items: [
+      { href: "/admin/configuracoes", label: "Configurações", icon: Settings },
+    ]
+  }
 ];
 
 export default function AdminSidebar() {
@@ -51,7 +70,7 @@ export default function AdminSidebar() {
   const sidebarContent = (
     <>
       <div className={`p-4 border-b border-white/10 ${collapsed ? "px-3" : "px-5"}`}>
-        <Link href="/" className="flex items-center gap-2 text-[var(--color-pao-dourado)] hover:text-white transition-colors group">
+        <Link href="/" className="flex items-center justify-center gap-3 text-[var(--color-pao-dourado)] hover:text-white transition-colors group">
           <div className="w-8 h-8 flex items-center justify-center relative overflow-hidden rounded-md group-hover:scale-110 transition-transform duration-300 flex-shrink-0">
              <Image src="/images/favicon/favicon-32x32.png" alt="Logo" fill className="object-contain" unoptimized />
           </div>
@@ -63,35 +82,49 @@ export default function AdminSidebar() {
         </Link>
       </div>
       <nav className={`flex-1 py-4 space-y-1 ${collapsed ? "px-2" : "px-3"}`}>
-        {navItems.map((item) => {
-          const active = isActive(item.href);
-          const Icon = item.icon;
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`
-                group relative flex items-center gap-3 rounded-xl font-medium transition-all duration-200
-                ${collapsed ? "justify-center px-3 py-3" : "px-4 py-3"}
-                ${active
-                  ? "bg-white/10 text-white"
-                  : "text-white/60 hover:text-white hover:bg-white/5"
-                }
-              `}
-            >
-              {active && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-[var(--color-pao-dourado)] rounded-r-full" />
-              )}
-              <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-[var(--color-pao-dourado)]" : ""}`} />
-              {!collapsed && <span className="whitespace-nowrap">{item.label}</span>}
-              {collapsed && (
-                <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#2B1B12] text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-xl border border-white/10 pointer-events-none">
-                  {item.label}
-                </div>
-              )}
-            </Link>
-          );
-        })}
+        {navGroups.map((group, gIdx) => (
+          <div key={gIdx} className={gIdx > 0 ? "pt-4" : ""}>
+            {!collapsed && (
+              <div className="flex items-center gap-3 px-5 mb-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[var(--color-pao-dourado)] opacity-60" />
+                <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.2em]">{group.title}</span>
+                <div className="flex-1 h-px bg-gradient-to-r from-white/10 to-transparent" />
+              </div>
+            )}
+            <div className="space-y-1">
+              {group.items.map((item) => {
+                const active = isActive(item.href);
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`
+                      group relative flex items-center gap-3 rounded-xl font-medium transition-all duration-200
+                      ${collapsed ? "justify-center px-3 py-3" : "px-4 py-3"}
+                      ${active
+                        ? "bg-white/10 text-white"
+                        : "text-white/60 hover:text-white hover:bg-white/5"
+                      }
+                    `}
+                  >
+                    {active && (
+                      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 bg-[var(--color-pao-dourado)] rounded-r-full" />
+                    )}
+                    <Icon className={`w-5 h-5 flex-shrink-0 ${active ? "text-[var(--color-pao-dourado)]" : ""}`} />
+                    {!collapsed && <span className="whitespace-nowrap">{item.label}</span>}
+                    {collapsed && (
+                      <div className="absolute left-full ml-3 px-3 py-1.5 bg-[#2B1B12] text-white text-sm rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 whitespace-nowrap z-[100] shadow-xl border border-white/10 pointer-events-none">
+                        <div className="text-[10px] font-bold text-[var(--color-pao-dourado)] uppercase tracking-wider mb-0.5">{group.title}</div>
+                        {item.label}
+                      </div>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
       <div className={`border-t border-white/10 ${collapsed ? "p-2" : "p-3"}`}>
         <div className={`flex items-center gap-3 mb-3 ${collapsed ? "justify-center px-3 py-3" : "px-4 py-3"}`}>

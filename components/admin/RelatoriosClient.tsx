@@ -327,9 +327,6 @@ export default function RelatoriosClient({
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {productMetrics[0] ? (
             <div className="lg:col-span-1 relative bg-gradient-to-br from-amber-500 to-orange-600 rounded-[2.5rem] p-8 text-white shadow-xl overflow-hidden print:border print:border-gray-200 print:text-black print:bg-none print:shadow-none flex flex-col justify-between min-h-[300px]">
-              <div className="absolute -bottom-10 -right-10 text-white/10 print:hidden">
-                <Medal className="w-64 h-64" />
-              </div>
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/20 border border-white/20 text-[10px] font-bold uppercase tracking-wider mb-6 backdrop-blur-md print:bg-amber-100 print:text-amber-800 print:border-amber-200">
                   <Medal className="w-4 h-4 text-amber-200 print:text-amber-600" />
