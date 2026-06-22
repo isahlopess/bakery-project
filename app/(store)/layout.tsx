@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import SmoothScroll from "@/components/layout/SmoothScroll";
 import Header from "@/components/layout/Header";
-import BreadProgressBar from "@/components/ui/BreadProgressBar";
+import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import { getStoreSettings } from "@/app/actions/config";
 
 export default async function StoreLayout({ children }: { children: ReactNode }) {
@@ -10,8 +10,8 @@ export default async function StoreLayout({ children }: { children: ReactNode })
     return (
         <SmoothScroll>
             <Header store={storeSettings} />
-            <BreadProgressBar />
             {children}
+            <WhatsAppButton />
         </SmoothScroll>
     );
 }
