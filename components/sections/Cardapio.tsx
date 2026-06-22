@@ -227,12 +227,13 @@ function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, on
                                     className="flex flex-col gap-7"
                                 >
                                     {itensPagina.map((item) => (
-                                        <div key={item.id} className="group relative">
+                                        <div key={item.id} className={`group relative ${item.estoque === 0 ? 'opacity-50 grayscale' : ''}`}>
                                             <div className="flex items-end justify-between gap-2 mb-0.5">
                                                 <div className="flex items-center gap-2.5 min-w-0">
                                                     <div 
-                                                        className="relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-[var(--color-pao-dourado)]/30 group-hover:scale-110 transition-transform duration-300 cursor-pointer"
+                                                        className={`relative w-8 h-8 rounded-full overflow-hidden flex-shrink-0 border border-[var(--color-pao-dourado)]/30 ${item.estoque === 0 ? '' : 'group-hover:scale-110 cursor-pointer'} transition-transform duration-300`}
                                                         onClick={() => {
+                                                            if (item.estoque === 0) return;
                                                             onImageClick(item.imagem);
                                                             document.documentElement.style.overflow = 'hidden';
                                                             document.body.style.overflow = 'hidden';
@@ -240,9 +241,14 @@ function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, on
                                                     >
                                                         <Image src={item.imagem} alt={item.nome} fill className="object-cover" unoptimized />
                                                     </div>
-                                                    <h4 className="text-[15px] font-serif font-bold text-[var(--color-marrom-cafe)] group-hover:text-[var(--color-terracota)] transition-colors truncate">
-                                                        {item.nome}
-                                                    </h4>
+                                                    <div className="flex flex-col">
+                                                        <h4 className={`text-[15px] font-serif font-bold text-[var(--color-marrom-cafe)] ${item.estoque === 0 ? '' : 'group-hover:text-[var(--color-terracota)]'} transition-colors truncate`}>
+                                                            {item.nome}
+                                                        </h4>
+                                                        {item.estoque === 0 && (
+                                                            <span className="text-[9px] font-bold uppercase tracking-widest text-red-500 mt-0.5">Fora de Estoque</span>
+                                                        )}
+                                                    </div>
                                                 </div>
                                                 <div className="flex-grow border-b-2 border-dotted border-[var(--color-marrom-cafe)]/15 mb-1 mx-1 min-w-[16px]" />
                                                 <span className="text-[15px] font-bold font-serif text-[var(--color-marrom-cafe)] whitespace-nowrap">
@@ -252,9 +258,11 @@ function OpenBook({ onClose, onImageClick, produtos }: { onClose: () => void, on
                                             <div className="pl-[2.65rem] pr-8">
                                                 <p className="text-[11px] text-[#735A4B] leading-relaxed italic">{item.desc}</p>
                                             </div>
-                                            <div className="absolute right-0 top-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <AddToCartButton item={item} />
-                                            </div>
+                                            {item.estoque > 0 && (
+                                                <div className="absolute right-0 top-7 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                    <AddToCartButton item={item} />
+                                                </div>
+                                            )}
                                         </div>
                                     ))}
                                 </motion.div>

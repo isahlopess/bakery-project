@@ -116,7 +116,7 @@ export default function Vitrine({ produtos }: { produtos: any[] }) {
                 <button 
                     onClick={() => {
                         addItem({
-                            id: produto.id + 200,
+                            id: produto.id,
                             nome: produto.nome,
                             preco: priceNumber,
                             precoFormatado: priceFormatted,

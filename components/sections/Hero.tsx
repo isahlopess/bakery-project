@@ -239,18 +239,9 @@ export default function Hero() {
                             }}
                             className="px-8 py-4 bg-[var(--color-terracota)] text-[var(--color-creme)] rounded-full font-bold text-lg shadow-[0_10px_35px_rgba(166,75,42,0.3)] hover:bg-[var(--color-pao-escuro)] transition-colors duration-500 hover:shadow-[0_15px_40px_rgba(166,75,42,0.5)] cursor-hover-target"
                         >
-                            Ver Cardápio Do Dia
+                            Ver Cardápio
                         </button>
                     </MagneticButton>
-                    <button
-                        onClick={() => {
-                            const target = document.getElementById("visite-nos");
-                            if (target) target.scrollIntoView({ behavior: "smooth" });
-                        }}
-                        className="text-[var(--color-creme)] hover:text-[var(--color-pao-dourado)] font-bold text-base transition-colors duration-300 py-2 border-b-2 border-transparent hover:border-[var(--color-pao-dourado)] cursor-hover-target"
-                    >
-                        Visite Nossa Padaria
-                    </button>
                 </div>
             </div>
             <div className="hero-3d-container w-full md:w-[50%] h-[420px] sm:h-[480px] md:h-[580px] flex items-center justify-center relative mt-8 md:mt-0 z-20">
