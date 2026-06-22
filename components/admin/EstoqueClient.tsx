@@ -319,66 +319,66 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
         </div>
       </motion.div>
       <div className="relative mb-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-2 gap-3 lg:gap-4">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="bg-[#1A110C] text-white p-4 md:p-5 rounded-[1.5rem] shadow-md flex flex-col justify-between group overflow-hidden relative min-h-[100px]">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4 items-stretch">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }} className="bg-[#1A110C] text-white p-4 md:p-5 rounded-[1.5rem] shadow-md flex flex-col justify-between group overflow-hidden relative">
              <div className="absolute -left-10 -top-10 w-32 h-32 bg-[var(--color-pao-dourado)]/10 rounded-full blur-2xl" />
              <div className="flex items-center gap-1.5 mb-1 relative z-10">
                <Layers className="w-4 h-4 text-[var(--color-pao-dourado)]" />
                <p className="text-[var(--color-pao-dourado)] text-[10px] font-bold uppercase tracking-[0.1em]">Acervo</p>
              </div>
-             <div className="relative z-10 flex items-baseline gap-2">
-               <h2 className="text-3xl md:text-4xl font-mono font-bold leading-none">{totalProducts}</h2>
+             <div className="relative z-10 flex items-baseline gap-2 mt-2">
+               <h2 className="text-3xl font-mono font-bold leading-none">{totalProducts}</h2>
                <p className="text-white/50 text-xs font-medium">totais</p>
              </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} className="bg-emerald-50 border border-emerald-100 p-4 md:p-5 rounded-[1.5rem] shadow-sm flex flex-col items-end text-right justify-between group min-h-[100px]">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.1 }} className="bg-emerald-50 border border-emerald-100 p-4 md:p-5 rounded-[1.5rem] shadow-sm flex flex-col items-end text-right justify-between group">
              <div className="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                <Check className="w-4 h-4" />
              </div>
              <div className="flex flex-row-reverse items-baseline gap-2 mt-2">
-               <h2 className="text-3xl md:text-4xl font-mono font-bold text-emerald-950">{normalStock}</h2>
+               <h2 className="text-3xl font-mono font-bold text-emerald-950">{normalStock}</h2>
                <p className="text-emerald-700/60 text-xs font-medium uppercase tracking-wider">Saudável</p>
              </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }} className="bg-amber-50 border border-amber-100 p-4 md:p-5 rounded-[1.5rem] shadow-sm flex flex-col justify-between group min-h-[100px]">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.2 }} className="hidden sm:flex bg-white/80 backdrop-blur-md rounded-[1.5rem] shadow-[0_4px_20px_rgba(26,17,12,0.05)] border border-white items-center justify-center flex-col z-20 sm:col-span-2 lg:col-span-1 py-1.5">
+            <div className="relative w-[130px] h-[65px] overflow-hidden flex flex-col items-center">
+              <svg viewBox="0 0 140 70" className="w-full h-full overflow-visible">
+                <path d="M 10 70 A 60 60 0 0 1 130 70" fill="none" stroke="currentColor" strokeWidth="16" className="text-[#1A110C]/5" strokeLinecap="round" />
+                <path 
+                  d="M 10 70 A 60 60 0 0 1 130 70" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="16" 
+                  className={`${healthScore > 80 ? "text-emerald-500" : healthScore > 50 ? "text-amber-500" : "text-red-500"} transition-all duration-1000 ease-out`} 
+                  strokeLinecap="round" 
+                  strokeDasharray={strokeDasharray} 
+                  strokeDashoffset={strokeDashoffset} 
+                />
+              </svg>
+              <div className="absolute bottom-[-2px] flex flex-col items-center">
+                <span className="text-2xl font-mono font-bold text-[#1A110C] leading-none">{Math.round(healthScore)}%</span>
+              </div>
+            </div>
+            <span className="text-[10px] uppercase font-bold text-[#1A110C]/50 tracking-[0.2em] mt-1.5">Saúde Geral</span>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }} className="bg-amber-50 border border-amber-100 p-4 md:p-5 rounded-[1.5rem] shadow-sm flex flex-col justify-between group">
              <div className="w-8 h-8 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center group-hover:scale-110 group-hover:-rotate-12 transition-transform duration-300">
                <TrendingDown className="w-4 h-4" />
              </div>
              <div className="flex items-baseline gap-2 mt-2">
-               <h2 className="text-3xl md:text-4xl font-mono font-bold text-amber-950">{lowStock}</h2>
+               <h2 className="text-3xl font-mono font-bold text-amber-950">{lowStock}</h2>
                <p className="text-amber-700/60 text-xs font-medium uppercase tracking-wider">Atenção</p>
              </div>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.3 }} className="bg-red-50 border border-red-100 p-4 md:p-5 rounded-[1.5rem] shadow-sm flex flex-col items-end text-right justify-between group min-h-[100px]">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 }} className="bg-red-50 border border-red-100 p-4 md:p-5 rounded-[1.5rem] shadow-sm flex flex-col items-end text-right justify-between group">
              <div className="w-8 h-8 rounded-xl bg-red-100 text-red-600 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_10px_rgba(220,38,38,0.2)]">
                <XCircle className="w-4 h-4" />
              </div>
              <div className="flex flex-row-reverse items-baseline gap-2 mt-2">
-               <h2 className="text-3xl md:text-4xl font-mono font-bold text-red-700">{outOfStock}</h2>
+               <h2 className="text-3xl font-mono font-bold text-red-700">{outOfStock}</h2>
                <p className="text-red-700/70 text-xs font-medium uppercase tracking-wider">Esgotados</p>
              </div>
           </motion.div>
-        </div>
-        <div className="hidden sm:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-white/80 backdrop-blur-md rounded-full shadow-[0_10px_30px_rgba(26,17,12,0.1)] border-[6px] border-white items-center justify-center flex-col z-20">
-          <div className="relative w-24 h-12 overflow-hidden flex flex-col items-center mt-3">
-            <svg viewBox="0 0 140 70" className="w-full h-full overflow-visible">
-              <path d="M 10 70 A 60 60 0 0 1 130 70" fill="none" stroke="currentColor" strokeWidth="16" className="text-[#1A110C]/5" strokeLinecap="round" />
-              <path 
-                d="M 10 70 A 60 60 0 0 1 130 70" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="16" 
-                className={`${healthScore > 80 ? "text-emerald-500" : healthScore > 50 ? "text-amber-500" : "text-red-500"} transition-all duration-1000 ease-out`} 
-                strokeLinecap="round" 
-                strokeDasharray={strokeDasharray} 
-                strokeDashoffset={strokeDashoffset} 
-              />
-            </svg>
-            <div className="absolute bottom-[-2px] flex flex-col items-center">
-              <span className="text-xl font-mono font-bold text-[#1A110C] leading-none">{Math.round(healthScore)}%</span>
-            </div>
-          </div>
-          <span className="text-[8px] uppercase font-bold text-[#1A110C]/40 tracking-widest mt-1">Saúde</span>
         </div>
       </div>
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mb-8 flex flex-col gap-6 glass-panel p-5 sm:p-6 rounded-[2rem]">
@@ -392,44 +392,44 @@ export default function EstoqueClient({ products }: { products: Product[] }) {
             className="w-full pl-11 pr-4 py-3.5 rounded-[1.25rem] bg-white/60 text-[#1A110C] placeholder-[#1A110C]/40 border border-[#1A110C]/5 focus:outline-none focus:border-[var(--color-pao-dourado)] focus:ring-4 focus:ring-[var(--color-pao-dourado)]/10 transition-all font-medium shadow-sm"
           />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-[#1A110C]/40">
-              <Grid className="w-4 h-4" />
-              <span className="text-xs font-bold uppercase tracking-wider">Tipo de Produto</span>
+        <div className="flex flex-col md:flex-row gap-5 overflow-x-auto pb-4 custom-scrollbar w-full md:justify-between">
+          <div className="flex flex-col gap-2 min-w-max">
+            <div className="flex items-center gap-2 text-[#1A110C]/40 pl-2">
+              <Grid className="w-3.5 h-3.5" />
+              <span className="text-[10px] font-bold uppercase tracking-wider">Tipo de Produto</span>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button onClick={() => setFilterCategory("ALL")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterCategory === "ALL" ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>Todos</button>
+            <div className="flex items-center bg-white/40 p-1 rounded-2xl border border-white shadow-sm backdrop-blur-sm">
+              <button onClick={() => setFilterCategory("ALL")} className={`px-4 py-1.5 rounded-[14px] text-xs font-bold transition-all ${filterCategory === "ALL" ? "bg-[#1A110C] text-white shadow-md" : "text-[#1A110C]/60 hover:text-[#1A110C] hover:bg-white/50"}`}>Todos</button>
               {[{ id: "SALGADO", label: "Salgados" }, { id: "DOCE", label: "Doces" }, { id: "BEBIDA", label: "Bebidas" }].map(c => (
-                <button key={c.id} onClick={() => setFilterCategory(c.id as "ALL" | "DOCE" | "SALGADO" | "BEBIDA")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterCategory === c.id ? "bg-[var(--color-pao-dourado)] text-[#1A110C] border-[var(--color-pao-dourado)]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{c.label}</button>
+                <button key={c.id} onClick={() => setFilterCategory(c.id as "ALL" | "DOCE" | "SALGADO" | "BEBIDA")} className={`px-4 py-1.5 rounded-[14px] text-xs font-bold transition-all ${filterCategory === c.id ? "bg-[var(--color-pao-dourado)] text-[#1A110C] shadow-md" : "text-[#1A110C]/60 hover:text-[#1A110C] hover:bg-white/50"}`}>{c.label}</button>
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-[#1A110C]/40">
-              <Layers className="w-4 h-4" />
-              <span className="text-xs font-bold uppercase tracking-wider">Seção</span>
+          <div className="flex flex-col gap-2 min-w-max">
+            <div className="flex items-center gap-2 text-[#1A110C]/40 pl-2">
+              <Layers className="w-3.5 h-3.5" />
+              <span className="text-[10px] font-bold uppercase tracking-wider">Seção</span>
             </div>
-            <div className="flex flex-wrap gap-2">
-              <button onClick={() => setFilterSection("ALL")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterSection === "ALL" ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>Todas</button>
+            <div className="flex items-center bg-white/40 p-1 rounded-2xl border border-white shadow-sm backdrop-blur-sm">
+              <button onClick={() => setFilterSection("ALL")} className={`px-4 py-1.5 rounded-[14px] text-xs font-bold transition-all ${filterSection === "ALL" ? "bg-[#1A110C] text-white shadow-md" : "text-[#1A110C]/60 hover:text-[#1A110C] hover:bg-white/50"}`}>Todas</button>
               {[{ id: "VITRINE", label: "Vitrine" }, { id: "CARDAPIO", label: "Cardápio" }, { id: "AMBOS", label: "Ambos" }].map(c => (
-                <button key={c.id} onClick={() => setFilterSection(c.id as "ALL" | "VITRINE" | "CARDAPIO" | "AMBOS")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterSection === c.id ? "bg-[#1A110C] text-white border-[#1A110C]" : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{c.label}</button>
+                <button key={c.id} onClick={() => setFilterSection(c.id as "ALL" | "VITRINE" | "CARDAPIO" | "AMBOS")} className={`px-4 py-1.5 rounded-[14px] text-xs font-bold transition-all ${filterSection === c.id ? "bg-white text-[#1A110C] shadow-md" : "text-[#1A110C]/60 hover:text-[#1A110C] hover:bg-white/50"}`}>{c.label}</button>
               ))}
             </div>
           </div>
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-[#1A110C]/40">
-              <Tag className="w-4 h-4" />
-              <span className="text-xs font-bold uppercase tracking-wider">Status do Estoque</span>
+          <div className="flex flex-col gap-2 min-w-max">
+            <div className="flex items-center gap-2 text-[#1A110C]/40 pl-2">
+              <Tag className="w-3.5 h-3.5" />
+              <span className="text-[10px] font-bold uppercase tracking-wider">Status do Estoque</span>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex items-center bg-white/40 p-1 rounded-2xl border border-white shadow-sm backdrop-blur-sm">
               {[
-                { id: "ALL", label: "Todos", color: "bg-[#1A110C] text-white border-[#1A110C]" },
-                { id: "NORMAL", label: "Normal", color: "bg-emerald-500 text-white border-emerald-500" },
-                { id: "BAIXO", label: "Baixo", color: "bg-amber-500 text-white border-amber-500" },
-                { id: "ZERADO", label: "Zerado", color: "bg-red-500 text-white border-red-500" }
+                { id: "ALL", label: "Todos", color: "bg-[#1A110C] text-white shadow-md", hover: "hover:bg-white/50" },
+                { id: "NORMAL", label: "Normal", color: "bg-emerald-500 text-white shadow-md", hover: "hover:text-emerald-600 hover:bg-emerald-50" },
+                { id: "BAIXO", label: "Baixo", color: "bg-amber-500 text-white shadow-md", hover: "hover:text-amber-600 hover:bg-amber-50" },
+                { id: "ZERADO", label: "Zerado", color: "bg-red-500 text-white shadow-md", hover: "hover:text-red-600 hover:bg-red-50" }
               ].map(f => (
-                <button key={f.id} onClick={() => setFilterStatus(f.id as "ALL" | "NORMAL" | "BAIXO" | "ZERADO")} className={`px-4 py-2 rounded-xl text-xs font-bold transition-all shadow-sm border ${filterStatus === f.id ? f.color : "bg-white/50 text-[#1A110C]/60 border-white hover:bg-white"}`}>{f.label}</button>
+                <button key={f.id} onClick={() => setFilterStatus(f.id as "ALL" | "NORMAL" | "BAIXO" | "ZERADO")} className={`px-4 py-1.5 rounded-[14px] text-xs font-bold transition-all ${filterStatus === f.id ? f.color : `text-[#1A110C]/60 ${f.hover}`}`}>{f.label}</button>
               ))}
             </div>
           </div>

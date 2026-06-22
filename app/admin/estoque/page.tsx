@@ -17,6 +17,9 @@ export default async function EstoquePage() {
     estoque: p.estoque,
     categoria: p.categoria,
     ordemExibicao: p.ordemExibicao,
+    tipo: p.tipo,
+    tag: p.tag,
+    bgColor: p.bgColor,
   }));
 
   return <EstoqueClient products={serialized} />;

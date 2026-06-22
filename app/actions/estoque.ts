@@ -60,7 +60,7 @@ export async function createProduto(formData: FormData) {
   });
 
   revalidatePath("/");
-  revalidatePath("/admin/estoque");
+  revalidatePath("/admin", "layout");
   revalidatePath("/admin");
 }
 
@@ -91,7 +91,7 @@ export async function updateProduto(formData: FormData) {
   });
 
   revalidatePath("/");
-  revalidatePath("/admin/estoque");
+  revalidatePath("/admin", "layout");
   revalidatePath("/admin");
 }
 
@@ -106,7 +106,7 @@ export async function reorderProdutos(updates: { id: number; ordemExibicao: numb
   await prisma.$transaction(queries);
 
   revalidatePath("/");
-  revalidatePath("/admin/estoque");
+  revalidatePath("/admin", "layout");
 }
 
 export async function deleteProduto(id: number) {
@@ -115,6 +115,6 @@ export async function deleteProduto(id: number) {
   });
 
   revalidatePath("/");
-  revalidatePath("/admin/estoque");
+  revalidatePath("/admin", "layout");
   revalidatePath("/admin");
 }
