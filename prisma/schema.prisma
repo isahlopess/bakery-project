@@ -18,40 +18,69 @@ model User {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          Int          @id @default(autoincrement())
   nome        String
   desc        String
   preco       Float
   imagem      String
   tag         String?
-  bgColor     String   @default("bg-[var(--color-branco-quente)]")
-  estoque     Int      @default(0)
-  categoria   String   @default("GERAL")
-  tipo        String   @default("paes")
-  ordemExibicao Int    @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  bgColor     String       @default("bg-[var(--color-branco-quente)]")
+  estoque     Int          @default(0)
+  categoria   String       @default("GERAL")
+  tipo          String       @default("paes")
+  ordemExibicao Int        @default(0)
+  rendimento    Float      @default(1)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  recipes       RecipeItem[]
+}
+
+model Ingredient {
+  id               Int          @id @default(autoincrement())
+  nome             String
+  custo            Float
+  custoPacote      Float        @default(0)
+  quantidadePacote Float        @default(1)
+  unidade          String
+  categoria        String       @default("GERAL")
+  recipes          RecipeItem[]
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+}
+
+model RecipeItem {
+  id           Int        @id @default(autoincrement())
+  productId    Int
+  product      Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  ingredientId Int
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Restrict)
+  quantidade   Float
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  customerName String
-  customerEmail String?
-  customerPhone String?
-  total       Float
-  status      String   @default("NOVO")
-  items       OrderItem[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              Int      @id @default(autoincrement())
+  customerName    String
+  customerEmail   String?
+  customerPhone   String?
+  customerAddress String?
+  observation     String?
+  total           Float
+  status          String   @default("NOVO")
+  items           OrderItem[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model OrderItem {
-  id        Int      @id @default(autoincrement())
-  orderId   Int
-  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  nome      String
-  preco     Float
-  quantidade Int
+  id            Int      @id @default(autoincrement())
+  orderId       Int
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  nome          String
+  preco         Float
+  custoUnitario Float    @default(0)
+  quantidade    Int
 }
 
 model StoreSettings {
