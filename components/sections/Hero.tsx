@@ -186,7 +186,7 @@ export default function Hero() {
     return (
         <section
             ref={containerRef}
-            className="relative flex min-h-screen w-full flex-col md:flex-row items-center justify-between overflow-hidden px-5 sm:px-6 md:px-16 pt-24 pb-20 md:pt-0 md:pb-0"
+            className="relative flex min-h-[100dvh] w-full flex-col md:flex-row items-center justify-center md:justify-between overflow-hidden px-5 sm:px-6 md:px-16 pt-24 pb-20 md:pt-0 md:pb-0"
         >
             <div
                 ref={backgroundRef}
@@ -244,7 +244,7 @@ export default function Hero() {
                     </MagneticButton>
                 </div>
             </div>
-            <div className="hero-3d-container w-full md:w-[50%] h-[420px] sm:h-[480px] md:h-[580px] flex items-center justify-center relative mt-8 md:mt-0 z-20">
+            <div className="hero-3d-container w-full md:w-[50%] h-[420px] sm:h-[480px] md:h-[580px] hidden md:flex items-center justify-center relative mt-8 md:mt-0 z-20">
                 <BreadScene />
                 <div className="absolute -z-10 w-[550px] h-[550px] bg-[var(--color-glow-fumaca)] rounded-full blur-[120px] opacity-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
