@@ -3,6 +3,7 @@
 import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 const checkoutSchema = z.object({
   customerName: z.string().min(3, "Nome completo é obrigatório"),
@@ -13,13 +14,11 @@ const checkoutSchema = z.object({
   items: z.array(z.object({
     id: z.number(),
     nome: z.string(),
-    preco: z.number(),
     quantidade: z.number().min(1),
   })).min(1, "Carrinho vazio"),
-  total: z.number().min(0.01)
 });
 
-export async function processCheckout(formData: z.infer<typeof checkoutSchema>) {
+export async function processCheckout(formData: any) {
   try {
     const data = checkoutSchema.parse(formData);
 
@@ -30,14 +29,34 @@ export async function processCheckout(formData: z.infer<typeof checkoutSchema>) 
     });
 
     const stockErrors: string[] = [];
-    data.items.forEach(item => {
+    let calculatedTotal = 0;
+
+    const validatedItems = data.items.map(item => {
       const dbProduct = productsInDb.find(p => p.id === item.id);
       if (!dbProduct) {
         stockErrors.push(`Produto "${item.nome}" não encontrado.`);
-      } else if (dbProduct.estoque < item.quantidade) {
+        return null;
+      } 
+      if (dbProduct.estoque < item.quantidade) {
         stockErrors.push(`Estoque insuficiente para "${item.nome}". Temos apenas ${dbProduct.estoque} un.`);
+        return null;
       }
-    });
+      
+      calculatedTotal += (dbProduct.preco * item.quantidade);
+      
+      let calcCost = 0;
+      if (dbProduct.recipes) {
+        calcCost = dbProduct.recipes.reduce((sum, r) => sum + (r.quantidade * r.ingredient.custo), 0);
+      }
+
+      return {
+        nome: dbProduct.nome,
+        preco: dbProduct.preco,
+        quantidade: item.quantidade,
+        custoUnitario: calcCost,
+        dbId: dbProduct.id
+      };
+    }).filter(Boolean) as any[];
 
     if (stockErrors.length > 0) {
       return { success: false, errors: stockErrors };
@@ -51,34 +70,23 @@ export async function processCheckout(formData: z.infer<typeof checkoutSchema>) 
           customerPhone: data.customerPhone,
           customerAddress: data.customerAddress,
           observation: data.observation || null,
-          total: data.total,
+          total: calculatedTotal,
           status: "NOVO",
           items: {
-            create: data.items.map(item => {
-              const dbP = productsInDb.find(p => p.id === item.id);
-              let calcCost = 0;
-              if (dbP && dbP.recipes) {
-                calcCost = dbP.recipes.reduce((sum, r) => sum + (r.quantidade * r.ingredient.custo), 0);
-              }
-              return {
-                nome: item.nome.trim(),
-                preco: item.preco,
-                quantidade: item.quantidade,
-                custoUnitario: calcCost
-              };
-            })
+            create: validatedItems.map(item => ({
+              nome: item.nome,
+              preco: item.preco,
+              quantidade: item.quantidade,
+              custoUnitario: item.custoUnitario
+            }))
           }
         }
       });
 
-      for (const item of data.items) {
+      for (const item of validatedItems) {
         await tx.product.update({
-          where: { id: item.id },
-          data: {
-            estoque: {
-              decrement: item.quantidade
-            }
-          }
+          where: { id: item.dbId },
+          data: { estoque: { decrement: item.quantidade } }
         });
       }
 
@@ -97,6 +105,11 @@ export async function processCheckout(formData: z.infer<typeof checkoutSchema>) 
 }
 
 export async function updateOrderStatus(orderId: number, status: string) {
+  const session = await auth();
+  if (!session) {
+    return { success: false, error: "Não autorizado." };
+  }
+
   try {
     await prisma.order.update({
       where: { id: orderId },

@@ -4,6 +4,8 @@ import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import fs from "fs/promises";
 import path from "path";
+import { auth } from "@/auth";
+
 async function saveImage(file: File): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
@@ -27,6 +29,9 @@ async function saveImage(file: File): Promise<string> {
 import { Prisma } from "@prisma/client";
 
 export async function createProduto(formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const nome = formData.get("nome") as string;
   const desc = formData.get("desc") as string;
   const preco = parseFloat(formData.get("preco") as string);
@@ -65,6 +70,9 @@ export async function createProduto(formData: FormData) {
 }
 
 export async function updateProduto(formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const id = parseInt(formData.get("id") as string, 10);
   const nome = formData.get("nome") as string;
   const preco = parseFloat(formData.get("preco") as string);
@@ -96,6 +104,9 @@ export async function updateProduto(formData: FormData) {
 }
 
 export async function reorderProdutos(updates: { id: number; ordemExibicao: number }[]) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const queries = updates.map((update) => 
     prisma.product.update({
       where: { id: update.id },
@@ -107,14 +118,22 @@ export async function reorderProdutos(updates: { id: number; ordemExibicao: numb
 
   revalidatePath("/");
   revalidatePath("/admin", "layout");
+  revalidatePath("/admin");
 }
 
 export async function deleteProduto(id: number) {
-  await prisma.product.delete({
-    where: { id }
-  });
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
 
-  revalidatePath("/");
-  revalidatePath("/admin", "layout");
-  revalidatePath("/admin");
+  try {
+    await prisma.product.delete({
+      where: { id }
+    });
+    revalidatePath("/");
+    revalidatePath("/admin", "layout");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: "Não foi possível excluir o produto." };
+  }
 }

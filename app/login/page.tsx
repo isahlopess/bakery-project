@@ -75,9 +75,9 @@ export default function LoginPage() {
                   <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-creme)] opacity-70 ml-1" htmlFor="email">
                     E-mail
                   </label>
-                  <div className="relative group">
+                  <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                      <Mail className="h-5 w-5 text-white opacity-50 group-focus-within:text-[var(--color-pao-dourado)] group-focus-within:opacity-100 transition-colors" />
+                      <Mail className="h-5 w-5 text-[var(--color-pao-dourado)] opacity-100 transition-colors" />
                     </div>
                     <input
                       className="w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-[var(--color-creme)] placeholder-white/30 focus:outline-none focus:bg-white/10 focus:border-[var(--color-pao-dourado)] focus:ring-2 focus:ring-[var(--color-pao-dourado)]/20 transition-all duration-300 relative z-0"
@@ -94,13 +94,10 @@ export default function LoginPage() {
                     <label className="block text-xs font-bold uppercase tracking-wider text-[var(--color-creme)] opacity-70" htmlFor="password">
                       Senha
                     </label>
-                    <a href="#" className="text-xs text-[var(--color-pao-dourado)] hover:text-white transition-colors opacity-80 hover:opacity-100">
-                      Esqueceu?
-                    </a>
                   </div>
-                  <div className="relative group">
+                  <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none z-10">
-                      <Lock className="h-5 w-5 text-white opacity-50 group-focus-within:text-[var(--color-pao-dourado)] group-focus-within:opacity-100 transition-colors" />
+                      <Lock className="h-5 w-5 text-[var(--color-pao-dourado)] opacity-100 transition-colors" />
                     </div>
                     <input
                       className="w-full pl-11 pr-4 py-3.5 bg-white/5 border border-white/20 rounded-xl text-[var(--color-creme)] placeholder-white/30 focus:outline-none focus:bg-white/10 focus:border-[var(--color-pao-dourado)] focus:ring-2 focus:ring-[var(--color-pao-dourado)]/20 transition-all duration-300 relative z-0"

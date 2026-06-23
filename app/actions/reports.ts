@@ -1,8 +1,12 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
 
 export async function getRevenueData(daysLimit = 7) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const settings = await prisma.storeSettings.findFirst() || { openTime: "06:00", closeTime: "20:00" };
   const openHour = parseInt(settings.openTime.split(":")[0]);
   const closeHour = parseInt(settings.closeTime.split(":")[0]);
@@ -70,6 +74,9 @@ export async function getRevenueData(daysLimit = 7) {
 }
 
 export async function getPeakHours(daysLimit = 30) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const settings = await prisma.storeSettings.findFirst() || { openTime: "06:00", closeTime: "20:00" };
   const openHour = parseInt(settings.openTime.split(":")[0]);
   const closeHour = parseInt(settings.closeTime.split(":")[0]);
@@ -136,6 +143,9 @@ export async function getPeakHours(daysLimit = 30) {
 }
 
 export async function getAverageProcessTime(daysLimit = 30) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const cutoff = new Date();
   if (daysLimit === 1) cutoff.setHours(0, 0, 0, 0);
   else { cutoff.setDate(cutoff.getDate() - (daysLimit - 1)); cutoff.setHours(0, 0, 0, 0); }
@@ -157,6 +167,9 @@ export async function getAverageProcessTime(daysLimit = 30) {
 }
 
 export async function getProductMetrics(daysLimit = 30) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const cutoff = new Date();
   if (daysLimit === 1) cutoff.setHours(0, 0, 0, 0);
   else { cutoff.setDate(cutoff.getDate() - (daysLimit - 1)); cutoff.setHours(0, 0, 0, 0); }
@@ -185,6 +198,9 @@ export async function getProductMetrics(daysLimit = 30) {
 }
 
 export async function getGeneralKPIs(daysLimit = 30) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const cutoff = new Date();
   if (daysLimit === 1) cutoff.setHours(0, 0, 0, 0);
   else { cutoff.setDate(cutoff.getDate() - (daysLimit - 1)); cutoff.setHours(0, 0, 0, 0); }

@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import fs from "fs";
 import path from "path";
+import { auth } from "@/auth";
 
 export async function getStoreSettings() {
   let settings = await prisma.storeSettings.findFirst();
@@ -26,6 +27,9 @@ export async function updateStoreSettings(data: {
   address: string;
   isOpen: boolean;
 }) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   await prisma.storeSettings.upsert({
     where: { id: 1 },
     update: data,
@@ -39,6 +43,9 @@ export async function updateStoreSettings(data: {
 }
 
 export async function updateUserProfile(id: number, data: { name: string; password?: string }) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const updateData: { name: string; password?: string } = { name: data.name };
   if (data.password && data.password.trim() !== "") {
     updateData.password = await bcrypt.hash(data.password, 10);
@@ -52,6 +59,9 @@ export async function updateUserProfile(id: number, data: { name: string; passwo
 }
 
 export async function resetSystem(password: string, type: "orders" | "products" | "all") {
+  const session = await auth();
+  if (!session) return { success: false, error: "Não autorizado" };
+
   const admin = await prisma.user.findFirst();
   if (!admin) {
     return { success: false, error: "Administrador não encontrado." };

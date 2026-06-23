@@ -1,8 +1,12 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
 
 export async function getLucroData() {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const products = await prisma.product.findMany({
     include: { recipes: { include: { ingredient: true } } }
   });

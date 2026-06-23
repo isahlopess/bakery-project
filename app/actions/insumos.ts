@@ -2,14 +2,21 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 export async function getIngredients() {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   return await prisma.ingredient.findMany({
     orderBy: { nome: "asc" }
   });
 }
 
 export async function createIngredient(data: { nome: string; custoPacote: number; quantidadePacote: number; unidade: string; categoria?: string }) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const custo = data.custoPacote / data.quantidadePacote;
   await prisma.ingredient.create({
     data: {
@@ -26,6 +33,9 @@ export async function createIngredient(data: { nome: string; custoPacote: number
 }
 
 export async function updateIngredient(id: number, data: { nome?: string; custoPacote?: number; quantidadePacote?: number; unidade?: string; categoria?: string }) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   const ingredient = await prisma.ingredient.findUnique({ where: { id } });
   if (!ingredient) throw new Error("Insumo não encontrado");
 
@@ -49,6 +59,9 @@ export async function updateIngredient(id: number, data: { nome?: string; custoP
 }
 
 export async function deleteIngredient(id: number) {
+  const session = await auth();
+  if (!session) return { success: false, error: "Não autorizado" };
+
   try {
     await prisma.ingredient.delete({ where: { id } });
     revalidatePath("/admin", "layout");
@@ -59,6 +72,9 @@ export async function deleteIngredient(id: number) {
 }
 
 export async function getProductsWithRecipes() {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   return await prisma.product.findMany({
     include: {
       recipes: {
@@ -70,6 +86,9 @@ export async function getProductsWithRecipes() {
 }
 
 export async function saveRecipe(productId: number, rendimento: number, items: { ingredientId: number; quantidade: number }[]) {
+  const session = await auth();
+  if (!session) throw new Error("Não autorizado");
+
   await prisma.$transaction([
     prisma.product.update({ where: { id: productId }, data: { rendimento } }),
     prisma.recipeItem.deleteMany({ where: { productId } }),
