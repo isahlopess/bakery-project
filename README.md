@@ -1,94 +1,78 @@
-# 🥖 Padaria Artesanal — Full-Stack Web Experience & Admin Dashboard
+# 🥖 Padaria Artesanal
 
-Um projeto de portfólio *End-to-End* desenvolvido para demonstrar o domínio sobre **Engenharia de Frontend Moderna**, **Design de Alta Performance** e **Arquitetura Full-Stack com Next.js**.
+Bem-vindo(a) ao repositório do **Padaria Artesanal**! Um projeto de portfólio desenvolvido com o propósito de unir uma interface imersiva para o usuário a um backend sólido e seguro.
 
-Esta aplicação evoluiu de uma Landing Page imersiva para um **sistema completo de gestão**, incluindo interface para clientes (vitrine) e um painel de administração (ERP) robusto para controle de estoque, insumos, fichas técnicas e inteligência financeira.
-
-![Capa do Projeto](https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80)
-
-## 🎯 Objetivo do Projeto
-
-Construir uma aplicação real que resolve dois problemas:
-1. **Para o Cliente (Frontend):** Uma interface que transmite o calor e a textura de uma padaria artesanal, utilizando micro-interações, efeitos de scroll e modelagem 3D.
-2. **Para a Padaria (Backend/Admin):** Um painel de controle seguro, rápido e inteligente para gerenciar o negócio, calcular custos de ingredientes e projetar o lucro real de cada venda.
+A ideia central não foi desenvolver apenas uma "landing page" visualmente agradável, mas sim construir um sistema real. A aplicação funciona como uma loja virtual para os clientes e como um painel de gestão (ERP) completo para a administração de produtos, controle de pedidos e cálculo de custos de receitas.
 
 ---
 
-## ✨ Funcionalidades em Destaque
+## 🎯 A Ideia por Trás do Projeto
 
-### 🏪 Storefront (Visão do Cliente)
-- **Design Sensorial:** Uso intenso de animações fluídas (GSAP + Framer Motion) para criar experiências táteis, como um cardápio interativo que simula as páginas de um livro real.
-- **Carrinho e Checkout:** *Side drawer* responsivo com gerenciamento de estado otimista para adicionar produtos em tempo real.
-- **Partículas Inteligentes:** Efeito visual de farinha caindo na tela usando `<canvas>`, otimizado via `requestAnimationFrame` (pausa automaticamente se não estiver na tela para poupar bateria).
-- **Acessibilidade Dinâmica:** O site respeita `prefers-reduced-motion`, desativando animações pesadas para usuários sensíveis ou dispositivos mais antigos.
-
-### 🔒 Painel Administrativo (Visão do Dono)
-- **Engenharia Financeira (Lucro Real):** O sistema não apenas lista produtos, ele cruza dados. É possível visualizar o faturamento bruto, custos operacionais e o lucro líquido real de cada pedido.
-- **Gestão de Insumos e Fichas Técnicas:** O administrador cadastra ingredientes (ex: Farinha, Ovos) e monta a receita do produto. O sistema calcula o custo exato de produção baseando-se no preço atual dos insumos.
-- **Relatórios Corporativos (PDF):** Módulo de exportação de balanços financeiros formatados automaticamente para impressão e envio aos contadores (CSS `@media print`).
-- **Dashboard Otimizado:** Consultas no banco de dados feitas utilizando agregações massivas do Prisma para evitar gargalos de memória (Prevenção de *Out of Memory* - OOM).
-- **Optimistic UI:** Formulários do painel utilizam `useTransition` do React 19 para atualizar a interface instantaneamente enquanto o servidor sincroniza os dados no fundo.
+O objetivo do projeto foi solucionar duas necessidades principais:
+1. **A Experiência do Cliente:** Entregar uma interface que transmita a sensação acolhedora e artesanal de uma "padaria de bairro", utilizando animações fluidas e detalhes visuais interativos (como o efeito de partículas na tela).
+2. **A Gestão do Negócio (O Painel):** Desenvolver um sistema de administração rápido e eficiente, onde é possível não só cadastrar produtos, mas também cruzar o custo exato dos ingredientes com o preço de venda para calcular o lucro real da operação.
 
 ---
 
-## 🧠 Arquitetura & Decisões Técnicas
+## ✨ Conceitos e Funcionalidades Aplicadas
 
-- **Next.js 16 (App Router):** Utilizado em seu estado da arte, separando *Server Components* (para velocidade e SEO) de *Client Components* (interatividade). 
-- **Server Actions:** Eliminação de rotas de API tradicionais. Todo o tráfego de dados e mutações do painel de controle acontece de forma segura via Server Actions com revalidação de cache instantânea (`revalidatePath`).
-- **Prisma ORM + PostgreSQL:** O banco de dados foi modelado para escalabilidade. Saiu-se do SQLite local para um ambiente nativo em nuvem (Neon Serverless Postgres), ideal para integrações com a Vercel.
-- **Ecossistema de Animações:** Scroll orquestrado pelo `GSAP ScrollTrigger` e físicas elásticas de interface (botões e modais) gerenciadas pelo `motion/react`.
+A arquitetura foi pensada para ser moderna e, acima de tudo, segura. Abaixo estão os destaques estruturais do sistema:
+
+### 🏪 A Vitrine (Frontend)
+- **Design Sensorial:** Utilização de GSAP e Framer Motion para dar vida aos menus e transições. O cardápio, por exemplo, conta com uma interação que simula o manuseio de páginas reais.
+- **Carrinho Instantâneo:** O carrinho é renderizado como um painel lateral (side drawer) que é atualizado de forma otimista, sem a necessidade de recarregar a página, sempre respeitando o limite do estoque disponível.
+- **Performance e Acessibilidade:** As animações mais complexas são pausadas automaticamente se a aba do navegador não estiver ativa, otimizando o uso da bateria. O projeto também respeita a preferência `prefers-reduced-motion` para usuários que optam por uma navegação estática.
+
+### 🔒 Segurança e Integridade
+- **Checkout à Prova de Fraudes:** Durante o processamento do pagamento, o servidor não confia nos valores de preço enviados pelo navegador. O sistema captura apenas o ID do produto e recalcula todo o subtotal nativamente através do banco de dados, impedindo qualquer manipulação de preços via cliente.
+- **Proteção nas Server Actions:** Todas as ações de mutação (como deleção de produtos ou edição de configurações) validam se a sessão do administrador está ativa. Tentativas de acesso direto às rotas sem autenticação são imediatamente bloqueadas.
+
+### 📊 Observabilidade e Monitoramento
+A aplicação foi preparada para um ambiente de produção real, focando na facilidade de diagnóstico e monitoramento:
+- **Logs Estruturados:** O uso do clássico `console.log` foi substituído por um Logger JSON estruturado. Caso ocorra uma falha crítica, o servidor registra o erro em um formato padronizado contendo o carimbo de tempo e o stack trace completo, ideal para ingestão em ferramentas de monitoramento.
+- **Auditoria de Banco de Dados:** O Prisma ORM está configurado para registrar o tempo e o conteúdo das queries executadas, facilitando a identificação de gargalos de performance no painel da Vercel.
+- **Rota de Saúde (Health Check):** O sistema conta com um endpoint `/api/health` preparado para que serviços de monitoramento (como o UptimeRobot) possam verificar periodicamente a disponibilidade do banco de dados e do servidor.
 
 ---
 
-## 🛠️ Stack Tecnológica
+## 🛠️ Tecnologias Utilizadas
 
-| Camada | Tecnologias |
-| :--- | :--- |
-| **Frontend Core** | React 19, Next.js 16, TypeScript |
-| **Estilização & UI** | Tailwind CSS v4, Lucide React (Ícones) |
-| **Animações** | GSAP, Motion (Framer), Embla Carousel |
-| **Backend & Banco de Dados**| Prisma ORM, PostgreSQL (Neon / Vercel Postgres) |
-| **Formulários & Validação** | Zod + React Hook Form |
-| **Deploy & Infra** | Vercel (Hobby Tier) |
+A stack principal selecionada para suportar a aplicação:
+
+- **Framework:** Next.js 16 (App Router) e React 19 com TypeScript.
+- **Estilo:** Tailwind CSS v4 e Lucide React para os ícones.
+- **Animações:** GSAP e Motion (Framer).
+- **Backend/Autenticação:** Next.js Server Actions e NextAuth v5.
+- **Banco de Dados:** Prisma ORM conectado ao PostgreSQL Serverless (Neon).
 
 ---
 
-## 🚀 Como Executar Localmente
+## 🚀 Como Rodar o Projeto Localmente
 
-### Pré-requisitos
-- Node.js 18.x ou superior instalado.
-- Ter uma URL de conexão PostgreSQL (ou você pode trocar o provedor do Prisma para SQLite caso queira rodar 100% offline).
+Para clonar e testar o código em um ambiente de desenvolvimento, siga os passos padrão:
 
-### Passos
-1. **Clone o repositório:**
+1. **Clone o repositório e instale as dependências:**
    ```bash
    git clone https://github.com/isahlopess/bakery-project.git
    cd bakery-project
-   ```
-
-2. **Instale as dependências:**
-   ```bash
    npm install
    ```
 
-3. **Configure as Variáveis de Ambiente:**
-   Crie um arquivo `.env.local` na raiz do projeto e adicione sua conexão do banco de dados:
+2. **Configure as Variáveis de Ambiente:**
+   Crie um arquivo `.env` na raiz do projeto e preencha com as chaves do banco de dados e do sistema de login (você pode utilizar o Neon Tech para provisionar um banco PostgreSQL rapidamente):
    ```env
-   POSTGRES_PRISMA_URL="sua_url_de_conexao_aqui"
-   POSTGRES_URL_NON_POOLING="sua_url_de_conexao_direta_aqui"
+   POSTGRES_PRISMA_URL="sua_url_de_conexao"
+   POSTGRES_URL_NON_POOLING="sua_url_sem_pool"
+   AUTH_SECRET="sua_chave_secreta"
    ```
 
-4. **Sincronize o Banco de Dados:**
+3. **Sincronize o banco e inicie a aplicação:**
    ```bash
    npx prisma db push
-   ```
-
-5. **Inicie o servidor local:**
-   ```bash
    npm run dev
    ```
 
-6. **Acesse a aplicação:**
-   Abra [http://localhost:3000](http://localhost:3000) para ver a vitrine, e `http://localhost:3000/admin` para acessar o painel de gestão.
+Após inicializar, acesse `http://localhost:3000` para visualizar a vitrine para clientes, ou adicione `/login` à URL para acessar o painel de administração.
 
 ---
+*Projeto desenvolvido para demonstração de habilidades em Engenharia de Software e Design de Interfaces.* ☕🥖
