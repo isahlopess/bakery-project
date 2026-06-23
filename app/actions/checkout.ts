@@ -4,6 +4,7 @@ import { z } from "zod";
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { SystemLogger } from "@/lib/logger";
 
 const checkoutSchema = z.object({
   customerName: z.string().min(3, "Nome completo é obrigatório"),
@@ -99,7 +100,7 @@ export async function processCheckout(formData: any) {
     if (error instanceof z.ZodError) {
       return { success: false, errors: error.issues.map((e) => e.message) };
     }
-    console.error("Checkout error:", error);
+    SystemLogger.error("Checkout process failed", error, { action: "processCheckout" });
     return { success: false, errors: ["Ocorreu um erro interno. Tente novamente."] };
   }
 }
