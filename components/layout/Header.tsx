@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Wheat, Menu, X } from "lucide-react";
+import { Wheat, Menu, X, User } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import MagneticButton from "@/components/ui/MagneticButton";
 import BreadBagCart from "@/components/ui/BreadBagCart";
@@ -35,7 +35,7 @@ export default function Header({ store }: HeaderProps) {
     }, []);
 
     const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-        if (window.location.pathname === "/") {
+        if (window.location.pathname === "/" && href.startsWith("/#")) {
             e.preventDefault();
             setIsOpen(false);
             const targetId = href.replace("/", "");
@@ -94,6 +94,9 @@ export default function Header({ store }: HeaderProps) {
                     <div className="text-[var(--color-creme)] hover:text-[var(--color-pao-dourado)] transition-colors">
                         <BreadBagCart isStoreOpen={store.isOpen} />
                     </div>
+                    <Link href="/login" className="text-[var(--color-creme)] hover:text-[var(--color-pao-dourado)] transition-colors flex items-center justify-center w-10 h-10 rounded-full bg-white/5 hover:bg-white/10" aria-label="Painel Administrativo">
+                        <User className="w-5 h-5" />
+                    </Link>
                     <button
                         onClick={() => setIsOpen(!isOpen)}
                         className="md:hidden p-2 text-[var(--color-creme)] hover:text-[var(--color-pao-dourado)] transition-colors"
