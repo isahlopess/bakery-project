@@ -31,6 +31,7 @@ import { Prisma } from "@prisma/client";
 export async function createProduto(formData: FormData) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   const nome = formData.get("nome") as string;
   const desc = formData.get("desc") as string;
@@ -72,6 +73,7 @@ export async function createProduto(formData: FormData) {
 export async function updateProduto(formData: FormData) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   const id = parseInt(formData.get("id") as string, 10);
   const nome = formData.get("nome") as string;
@@ -106,6 +108,7 @@ export async function updateProduto(formData: FormData) {
 export async function reorderProdutos(updates: { id: number; ordemExibicao: number }[]) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   const queries = updates.map((update) => 
     prisma.product.update({
@@ -124,6 +127,7 @@ export async function reorderProdutos(updates: { id: number; ordemExibicao: numb
 export async function deleteProduto(id: number) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   try {
     await prisma.product.delete({

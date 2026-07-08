@@ -29,6 +29,7 @@ export async function updateStoreSettings(data: {
 }) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   await prisma.storeSettings.upsert({
     where: { id: 1 },
@@ -45,6 +46,7 @@ export async function updateStoreSettings(data: {
 export async function updateUserProfile(id: number, data: { name: string; password?: string }) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   const updateData: { name: string; password?: string } = { name: data.name };
   if (data.password && data.password.trim() !== "") {
@@ -61,6 +63,7 @@ export async function updateUserProfile(id: number, data: { name: string; passwo
 export async function resetSystem(password: string, type: "orders" | "products" | "all") {
   const session = await auth();
   if (!session) return { success: false, error: "Não autorizado" };
+  if (session.user.role === "VIEWER") return { success: false, error: "Modo Demonstração: Alterações desativadas." };
 
   const admin = await prisma.user.findFirst();
   if (!admin) {

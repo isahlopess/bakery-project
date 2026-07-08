@@ -16,6 +16,7 @@ export async function getIngredients() {
 export async function createIngredient(data: { nome: string; custoPacote: number; quantidadePacote: number; unidade: string; categoria?: string }) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   const custo = data.custoPacote / data.quantidadePacote;
   await prisma.ingredient.create({
@@ -35,6 +36,7 @@ export async function createIngredient(data: { nome: string; custoPacote: number
 export async function updateIngredient(id: number, data: { nome?: string; custoPacote?: number; quantidadePacote?: number; unidade?: string; categoria?: string }) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   const ingredient = await prisma.ingredient.findUnique({ where: { id } });
   if (!ingredient) throw new Error("Insumo não encontrado");
@@ -61,6 +63,7 @@ export async function updateIngredient(id: number, data: { nome?: string; custoP
 export async function deleteIngredient(id: number) {
   const session = await auth();
   if (!session) return { success: false, error: "Não autorizado" };
+  if (session.user.role === "VIEWER") return { success: false, error: "Modo Demonstração: Alterações desativadas." };
 
   try {
     await prisma.ingredient.delete({ where: { id } });
@@ -88,6 +91,7 @@ export async function getProductsWithRecipes() {
 export async function saveRecipe(productId: number, rendimento: number, items: { ingredientId: number; quantidade: number }[]) {
   const session = await auth();
   if (!session) throw new Error("Não autorizado");
+  if (session.user.role === "VIEWER") throw new Error("Modo Demonstração: Alterações desativadas.");
 
   await prisma.$transaction([
     prisma.product.update({ where: { id: productId }, data: { rendimento } }),

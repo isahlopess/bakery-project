@@ -189,6 +189,18 @@ async function main() {
             email: 'admin@padaria.com',
             password: hashedPassword,
             name: 'Administrador',
+            role: 'ADMIN'
+        }
+    });
+
+    console.log('Criando usuário Demo...');
+    const hashedDemoPassword = await bcrypt.hash('demo123', 10);
+    await prisma.user.create({
+        data: {
+            email: 'demo@padaria.com',
+            password: hashedDemoPassword,
+            name: 'Demonstração',
+            role: 'VIEWER'
         }
     });
 
