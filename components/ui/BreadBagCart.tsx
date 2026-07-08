@@ -3,14 +3,16 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Plus, Minus, Trash2, ShoppingBag } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShoppingBag, Sparkles } from "lucide-react";
 import { useCart } from "@/lib/cartStore";
 import Image from "next/image";
 import Link from "next/link";
+import { getCrossSellingRecommendations } from "@/app/actions/crossSelling";
 
 export default function BreadBagCart({ isStoreOpen = true }: { isStoreOpen?: boolean }) {
     const {
         items,
+        addItem,
         removeItem,
         updateQuantity,
         clearCart,
@@ -21,7 +23,36 @@ export default function BreadBagCart({ isStoreOpen = true }: { isStoreOpen?: boo
     } = useCart();
 
     const [mounted, setMounted] = useState(false);
-    useEffect(() => setMounted(true), []);
+    const [recommendations, setRecommendations] = useState<any[]>([]);
+    const [isCrossLoading, setIsCrossLoading] = useState(false);
+
+    useEffect(() => {
+        const t = setTimeout(() => setMounted(true), 0);
+        return () => clearTimeout(t);
+    }, []);
+
+    useEffect(() => {
+        if (!isOpen || items.length === 0) {
+            if (!isOpen) {
+                setTimeout(() => setRecommendations([]), 0);
+            }
+            return;
+        }
+        
+        if (recommendations.length > 0) return;
+
+        const fetchRecommendations = async () => {
+            setIsCrossLoading(true);
+            const itemIds = items.map(i => i.id);
+            const recs = await getCrossSellingRecommendations(itemIds);
+            setRecommendations(recs);
+            setIsCrossLoading(false);
+        };
+
+        fetchRecommendations();
+    }, [isOpen, items.length]);
+
+    const visibleRecommendations = recommendations.filter(rec => !items.some(i => i.id === rec.id));
 
     useEffect(() => {
         if (isOpen) {
@@ -177,6 +208,43 @@ export default function BreadBagCart({ isStoreOpen = true }: { isStoreOpen?: boo
                                             </motion.div>
                                         ))}
                                     </AnimatePresence>
+                                    {visibleRecommendations.length > 0 && (
+                                        <div className="mt-4 pt-4 border-t border-[var(--color-pao-dourado)]/20">
+                                            <div className="flex items-center gap-2 mb-3">
+                                                <Sparkles className="w-4 h-4 text-[var(--color-terracota)]" />
+                                                <span className="text-xs font-bold uppercase tracking-wider text-[var(--color-pao-escuro)]">
+                                                    Combina perfeitamente com...
+                                                </span>
+                                            </div>
+                                            <div className="flex flex-col gap-3">
+                                                {visibleRecommendations.map((rec) => (
+                                                    <div key={`rec-${rec.id}`} className="flex items-center justify-between p-2 rounded-xl bg-white/40 border border-white/50">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="w-12 h-12 relative rounded-lg overflow-hidden border border-[var(--color-pao-dourado)]/10">
+                                                                <Image src={rec.imagem} alt={rec.nome} fill className="object-cover" />
+                                                            </div>
+                                                            <div className="flex flex-col">
+                                                                <span className="text-sm font-bold text-[var(--color-marrom-cafe)] line-clamp-1">{rec.nome}</span>
+                                                                <span className="text-xs font-medium text-[var(--color-terracota)]">R$ {rec.preco.toFixed(2).replace('.', ',')}</span>
+                                                            </div>
+                                                        </div>
+                                                        <button
+                                                            onClick={() => addItem({
+                                                                id: rec.id,
+                                                                nome: rec.nome,
+                                                                preco: rec.preco,
+                                                                precoFormatado: `R$ ${rec.preco.toFixed(2).replace('.', ',')}`,
+                                                                imagem: rec.imagem
+                                                            })}
+                                                            className="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--color-terracota)] text-white hover:bg-[var(--color-pao-escuro)] transition-colors shadow-sm shrink-0"
+                                                        >
+                                                            <Plus className="w-4 h-4" />
+                                                        </button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
