@@ -10,20 +10,10 @@ async function saveImage(file: File): Promise<string> {
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
 
-  const uploadDir = path.join(process.cwd(), "public", "uploads");
-  try {
-    await fs.access(uploadDir);
-  } catch {
-    await fs.mkdir(uploadDir, { recursive: true });
-  }
-
-  const extension = file.name.split('.').pop() || 'png';
-  const fileName = `${Date.now()}-${Math.round(Math.random() * 10000)}.${extension}`;
-  const filePath = path.join(uploadDir, fileName);
+  const mimeType = file.type || "image/png";
+  const base64String = buffer.toString('base64');
   
-  await fs.writeFile(filePath, buffer);
-  
-  return `/uploads/${fileName}`;
+  return `data:${mimeType};base64,${base64String}`;
 }
 
 import { Prisma } from "@prisma/client";
