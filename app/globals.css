@@ -63,15 +63,15 @@
 
 @layer components {
   .glass-panel {
-    @apply bg-white/40 backdrop-blur-xl border border-white/40 shadow-[0_8px_32px_rgba(42,29,22,0.05)];
+    @apply bg-white/70 backdrop-blur-2xl border border-white/80 shadow-[0_8px_30px_rgb(0,0,0,0.04)] rounded-[2rem];
   }
   
   .glass-card {
-    @apply bg-white/60 backdrop-blur-md border border-white/50 shadow-[0_4px_24px_rgba(42,29,22,0.04)] hover:shadow-[0_12px_40px_rgba(42,29,22,0.08)] transition-all duration-500;
+    @apply bg-white/60 backdrop-blur-xl border border-white/60 shadow-[0_4px_20px_rgb(0,0,0,0.03)] hover:shadow-[0_12px_40px_rgba(181,87,43,0.1)] hover:border-white transition-all duration-500 rounded-3xl;
   }
 
   .glass-dark {
-    @apply bg-[#2A1D16]/80 backdrop-blur-xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)];
+    @apply bg-[#1A110C]/80 backdrop-blur-2xl border border-white/10 shadow-[0_8px_40px_rgba(0,0,0,0.4)] rounded-[2rem];
   }
 }
 
