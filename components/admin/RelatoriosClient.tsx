@@ -226,7 +226,7 @@ export default function RelatoriosClient({
               <h4 className="text-2xl sm:text-3xl font-bold text-white font-serif truncate print:text-black" title={formatCurrency(generalKPIs.totalRevenue)}>{formatCurrency(generalKPIs.totalRevenue)}</h4>
             </div>
             <div className="flex-1 h-16 ml-4 opacity-80 print:hidden relative z-10 flex items-center">
-              {typeof window !== 'undefined' && <Chart options={revenueSparklineOptions} series={[{ data: revenueData.series }]} type="area" height={60} width="100%" />}
+              <Chart options={revenueSparklineOptions} series={[{ data: revenueData.series }]} type="area" height={60} width="100%" />
             </div>
           </motion.div>
           <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5, delay: 0.3 }} className="bg-gradient-to-br from-[#B5572B] to-[#8c401f] p-6 rounded-[2.5rem] flex flex-row items-center shadow-xl print:shadow-none print:border print:border-gray-200 print:bg-none relative overflow-hidden">
@@ -238,7 +238,7 @@ export default function RelatoriosClient({
               <h4 className="text-2xl sm:text-3xl font-bold text-white font-serif print:text-black">{generalKPIs.totalOrders} <span className="text-lg font-medium opacity-70 font-sans">concl.</span></h4>
             </div>
             <div className="flex-1 h-16 ml-4 opacity-80 print:hidden relative z-10 flex items-center">
-              {typeof window !== 'undefined' && <Chart options={ordersSparklineOptions} series={[{ data: revenueData.ordersSeries }]} type="area" height={60} width="100%" />}
+              <Chart options={ordersSparklineOptions} series={[{ data: revenueData.ordersSeries }]} type="area" height={60} width="100%" />
             </div>
           </motion.div>
         </div>
@@ -259,14 +259,12 @@ export default function RelatoriosClient({
           </div>
         </div>
         <div className="-ml-2 -mb-6 mt-2">
-          {typeof window !== 'undefined' && (
             <Chart 
               options={{...heatmapOptions, plotOptions: { heatmap: { radius: 8, shadeIntensity: 0.5, useFillColorAsStroke: false, colorScale: { ranges: [{ from: 0, to: 0, name: 'Frio', color: '#FDFBF7' }, { from: 1, to: 5, name: 'Morno', color: '#fcd34d' }, { from: 6, to: 15, name: 'Quente', color: '#f59e0b' }, { from: 16, to: 1000, name: 'Pico', color: '#dc2626' }] } } }}} 
               series={[{ name: "Intensidade", data: peakHoursData.heatmapData }]} 
               type="heatmap" 
               height={140} 
             />
-          )}
         </div>
       </motion.div>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -280,9 +278,7 @@ export default function RelatoriosClient({
             </div>
           </div>
           <div className="-ml-4 -mr-2">
-             {typeof window !== 'undefined' && (
                 <Chart options={revenueChartOptions} series={[{ name: "Receita", data: revenueData.series }]} type="area" height={350} />
-             )}
           </div>
         </motion.div>
         <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5, delay: 0.5 }} className="glass-panel p-8 rounded-[2.5rem] shadow-sm flex flex-col items-center justify-center relative overflow-hidden print:break-inside-avoid print:shadow-none print:border print:border-gray-200">
@@ -297,9 +293,7 @@ export default function RelatoriosClient({
           </div>
           <p className="text-sm font-medium text-[#1A110C]/40 w-full mb-6 z-10">Intensidade atual comparada ao {isToday ? "pico do dia" : "pico histórico do período"}</p>
           <div className="w-full flex-1 flex items-center justify-center z-10 -my-4">
-            {typeof window !== 'undefined' && (
               <Chart options={gaugeOptions} series={[peakHoursData.currentHeat]} type="radialBar" height={300} />
-            )}
           </div>
           <div className="w-full bg-white/60 rounded-2xl p-5 flex items-center justify-between z-10 border border-[#1A110C]/5 print:bg-gray-50">
              <div>
