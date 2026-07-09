@@ -17,6 +17,7 @@ import {
   BarChart3,
   ChefHat,
   TrendingUp,
+  Trophy,
 } from "lucide-react";
 import { logOut } from "@/app/actions/auth";
 
@@ -26,6 +27,7 @@ const navGroups = [
     items: [
       { href: "/admin", label: "Visão Geral", icon: LayoutDashboard },
       { href: "/admin/relatorios", label: "Performance", icon: BarChart3 },
+      { href: "/admin/fidelidade", label: "Fidelidade", icon: Trophy },
       { href: "/admin/lucro", label: "Lucro Real", icon: TrendingUp },
     ]
   },
